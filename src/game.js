@@ -17,6 +17,7 @@ class Game {
 
     // global ID for interval
     this.intervalID;
+    this.displayTime(); // display time in beginning
   }
 
   start() {
@@ -30,8 +31,9 @@ class Game {
 
     // start interval for countdown
     this.intervalID = setInterval(() => {
-      this.countdown --;
-      console.log (this.countdown);
+      this.countdown--;
+      this.displayTime();
+      console.log(this.countdown);
     }, 1000);
 
     // Start the game loop
@@ -101,6 +103,19 @@ class Game {
       scoreH1.style.color = "red";
     }
     scoreH1.innerHTML = `SCORE ${scoreString}`;
+  }
+
+  displayTime() {
+    const timeH1 = document.getElementById("time");
+    let timeString = "";
+    if (this.countdown < 100 && this.countdown >= 10) {
+      timeString = `0:${this.countdown}`;
+    } else if (this.countdown < 10 && this.countdown > 0) {
+      timeString = `0:0${this.countdown}`;
+    } else if (this.countdown <= 0) {
+      timeString = `0:00`;
+    }
+    timeH1.innerHTML = `${timeString}`;
   }
 
   endGame() {
