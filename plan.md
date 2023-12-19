@@ -68,6 +68,7 @@ The Harvest
 - [ ] create window with game board container
 - [ ] create end game window
 - [ ] make broccoloon div pair
+- [ ] make broccoloon div pair spawn at random location above the horizon
 - [ ] make broccoloon move up the window
 - [ ] give the broccoloon (its sub divs) event listeners "click"
 - [ ] make balloon vanish on click
@@ -83,8 +84,10 @@ The Harvest
 
 - [ ] (extra) change div blocks to images; background image
 - [ ] (extra) score counter decreasing when hit a broccoli 
-- [ ] (extra) let multiple broccoloons appear randomly: size
+- [ ] (extra) let multiple broccoloons appear randomly: size + speed
 - [ ] (extra) include sounds
 - [ ] (extra) include reloading mechanism (shot counter, delay)
 - [ ] (extra) show available darts on screen
 - [ ] (extra) make broccoloons wiggle left and right on their way up
+
+- [ ] (extra) delay between shooting and hitting

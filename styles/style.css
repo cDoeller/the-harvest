@@ -1,0 +1,118 @@
+html,
+body,
+h1,
+p,
+div {
+  margin: 0;
+  padding: 0;
+  font-size: 12px;
+}
+
+main {
+  width: 100vw;
+  height: 100vh;
+}
+
+#end-window {
+    background-color: green;
+    display: none;
+  }
+
+#game-window {
+    /* for testing */
+  display: block; 
+  height: 100vh;
+  width: 100vw;
+}
+#start-window {
+  height: 100vh;
+  width: 100vw;
+  background-image: url("../img/background-image.jpg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* for testing */
+  display: none;
+}
+
+/* START SCREEN */
+
+.start-game-title {
+  font-size: 3em;
+  text-transform: uppercase;
+}
+
+.normal-text {
+  margin-top: 30px;
+  width: 50%;
+  font-size: 2em;
+  text-align: center;
+}
+
+.button {
+    margin-top: 30px;
+    font-size: 2em;
+    border: none;
+    padding: 15px;
+    background-color: red;
+    color:white;
+    text-transform: uppercase;
+    border-radius: 10px;
+}
+
+#restart-button {
+    background-color: blue;
+}
+
+/* GAME SCREEN */
+
+/* canvas for actual game */
+#game-screen {
+  /* background-color: green; */
+  width: 100vw;
+  height: 100vh;
+  background-image: url("../img/background-image.jpg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: relative;
+}
+
+#score {
+    font-size: 3.5em;
+    position: absolute;
+    right: 20px;
+    top: 20px;
+}
+
+#time {
+    font-size: 3.5em;
+    color: rgb(169, 97, 10);
+    position: absolute;
+    right: 50vw;
+    bottom: 20px;
+}
+
+ /* .target {
+    position: absolute;
+}  */
+
+.balloon-class {
+    background-image: url("../img/balloon.png");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+.broccoli-class {
+    background-image: url("../img/BROCCOLI-rope.png");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: relative;
+}
