@@ -71,6 +71,10 @@ main {
 
 /* GAME SCREEN */
 
+#time-up{
+  display: none;
+}
+
 /* canvas for actual game */
 #game-screen {
   /* background-color: green; */
