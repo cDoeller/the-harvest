@@ -55,7 +55,7 @@ class Game {
     // stop when countdown === 0
     if (this.countdown <= 0) {
       console.log("time is up");
-      console.log (this.targets);
+      console.log(this.targets);
       this.gameIsOver = true;
       clearInterval(this.intervalID);
     }
@@ -86,27 +86,40 @@ class Game {
         console.log(`removed ${this.score}`);
         // delete from array
         this.targets.splice(index, 1);
-        //console.log("removed");
-        //console.log(this.targets);
-        // no further displaying for this target
+        // make a replacement
+        this.spawnTargtes(1);
+        // no further displaying for this target --> escape
         return;
       }
-      // // target hit (balloon)
-      // if (target.balloonHit() === true) {
-      //   // score points
-      //   if (target.scaleFactor === this.scaleFacotrs[0]) this.score += this.scoreSmall;
-      //   if (target.scaleFactor === this.scaleFacotrs[1]) this.score += this.scoreMedium;
-      //   if (target.scaleFactor === this.scaleFacotrs[2]) this.score += this.scoreLarge;
-      //   console.log(`balloon hit ${this.score}`);
-      // }
-      // // target hit (broccoli)
-      // if (target.broccoliHit() === true) {
-      //   // penalty points
-      //   this.score -= this.penaltyVanish;
-      //   console.log(`broccoli hit ${this.score}`);
-      // }
-      // move
-      target.moveTarget();
+      // target hit (balloon)
+      if (target.balloonIsHit === true) {
+        // score points
+        if (target.scaleFactor === this.scaleFacotrs[0])
+          this.score += this.scoreSmall;
+        if (target.scaleFactor === this.scaleFacotrs[1])
+          this.score += this.scoreMedium;
+        if (target.scaleFactor === this.scaleFacotrs[2])
+          this.score += this.scoreLarge;
+        console.log(`balloon hit ${this.score}`);
+        target.balloonIsHit = false;
+        // make new target
+        this.spawnTargtes(1);
+      }
+      // target hit (broccoli)
+      if (target.broccoliIsHit === true) {
+        // penalty points
+        this.score -= this.penaltyVanish;
+        console.log(`broccoli hit ${this.score}`);
+        target.broccoliIsHit = false;
+      }
+      // MOVE or GROW
+      if (target.positionY < this.spawnTargetBottom && target.targetRising === false) {
+        // change to growing image
+        target.growInGround(target.targetNumber);
+      } else {
+        // move up or down
+        target.moveTarget();
+      }
       // display
       target.displayTarget();
     });
@@ -117,17 +130,20 @@ class Game {
   displayScore() {
     const scoreH1 = document.getElementById("score");
     let scoreString = "";
-    if (this.score < 100 && this.score >= 10) {
+    if (this.score < 1000 && this.score >= 100) {
       scoreString = `0${Math.abs(this.score)}`;
+      scoreH1.style.color = "rgb(0, 0, 137)";
+    } else if (this.score < 100 && this.score >= 10) {
+      scoreString = `00${Math.abs(this.score)}`;
       scoreH1.style.color = "rgb(0, 0, 137)";
     } else if (this.score < 10 && this.score >= 0) {
-      scoreString = `00${Math.abs(this.score)}`;
+      scoreString = `000${Math.abs(this.score)}`;
       scoreH1.style.color = "rgb(0, 0, 137)";
     } else if (this.score < 0 && this.score > -10) {
-      scoreString = `00${Math.abs(this.score)}`;
+      scoreString = `000${Math.abs(this.score)}`;
       scoreH1.style.color = "red";
     } else if (this.score <= -10 && this.score >= -100) {
-      scoreString = `0${Math.abs(this.score)}`;
+      scoreString = `00${Math.abs(this.score)}`;
       scoreH1.style.color = "red";
     }
     scoreH1.innerHTML = `SCORE ${scoreString}`;

@@ -1,13 +1,17 @@
 window.onload = function () {
   // grab start button on load of page
   const startButton = document.getElementById("start-button");
+  const restartButton = document.getElementById("restart-button");
 
   // add listener to start button
   // call function to start the game
   startGame(); // only for testing -----> maxTime in brackets
 
   startButton.addEventListener("click", function () {
-    //startGame(); //for testing
+    startGame();
+  });
+  restartButton.addEventListener("click", function () {
+    startGame();
   });
 
   function startGame() {

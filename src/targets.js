@@ -1,5 +1,4 @@
 class Target {
-
   constructor(
     spawnPositionX,
     spawnPositionY,
@@ -9,11 +8,17 @@ class Target {
   ) {
     this.spawnPositionX = spawnPositionX;
     this.spawnPositionY = spawnPositionY;
-    this.scaleFactor = scaleFactor; 
+    this.scaleFactor = scaleFactor;
     this.speed = speed;
+    this.fallingSpeed = 3;
     this.positionX = spawnPositionX; // initial pos at spawn pos
     this.positionY = spawnPositionY; // initial pos at spawn pos
     this.targetNumber = targetNumber;
+    this.balloonIsHit = false;
+    this.broccoliIsHit = false;
+    this.broccoliWasHit = false;
+    this.targetRising = true;
+    this.growing = false;
     // get game screen for appending targets
     this.gameScreen = document.getElementById("game-screen");
   }
@@ -44,6 +49,7 @@ class Target {
     // make a balloon element
     const balloon = document.createElement("div");
     balloon.className = "balloon-class";
+    balloon.id = `balloon-${this.targetNumber}`;
     balloon.style.position = "absolute";
     balloon.style.left = "0";
     balloon.style.top = "0";
@@ -56,6 +62,7 @@ class Target {
     // make a broccoli element
     const broccoli = document.createElement("div");
     broccoli.className = "broccoli-class";
+    broccoli.id = `broccoli-${this.targetNumber}`;
     broccoli.style.position = "absolute";
     broccoli.style.left = "0";
     broccoli.style.top = `${(5 / 9) * 100}%`;
@@ -64,10 +71,23 @@ class Target {
     broccoli.style.backgroundColor = "none";
     // append balloon
     targetContainer.appendChild(broccoli);
+
+    // add event listeners
+    // pass specific id of elements
+    balloon.addEventListener("mousedown", () => {
+      this.ballooniHit(targetContainer.id, balloon.id, broccoli.id);
+    });
+    broccoli.addEventListener("mousedown", () => {
+      this.broccoliHit(broccoli.id);
+    });
   }
 
   moveTarget() {
-    this.positionY+=this.speed;
+    if (this.targetRising) {
+      this.positionY += this.speed;
+    } else {
+      this.positionY -= this.fallingSpeed;
+    }
   }
 
   displayTarget() {
@@ -78,15 +98,60 @@ class Target {
 
   // check if target is out of screen
   isGone() {
-    if (this.positionY > window. innerHeight){
-        return true;
+    if (this.positionY > window.innerHeight) {
+      return true;
     } else {
-        //console.log (window. innerHeight);
-        return false;
+      //console.log (window. innerHeight);
+      return false;
     }
   }
 
-  ballooniHit(){}
+  ballooniHit(targetId, balloonId, broccoliId) {
+    // change state
+    this.balloonIsHit = true;
+    this.targetRising = false;
+    // add explosion sprite
+    const balloon = document.getElementById(`${balloonId}`);
+    const target = document.getElementById(`${targetId}`);
+    const broccoli = document.getElementById(`${broccoliId}`);
+    balloon.classList.add("belloon-explode");
+    if (!this.broccoliWasHit) {
+      broccoli.classList.add("broccoli-falling");
+    } else {
+      broccoli.classList.add("broccoli-rotten-falling");
+    }
+    setTimeout(() => {
+      balloon.remove();
+      // let klicks through div element
+      target.style.pointerEvents = "none";
+    }, 50);
+  }
 
-  broccoliHit(){}
+  broccoliHit(id) {
+    // change state
+    this.broccoliIsHit = true;
+    this.broccoliWasHit = true;
+    // add dart sprite
+    const broccoli = document.getElementById(`${id}`);
+    broccoli.classList.add("broccoli-hit");
+    // setTimeout(() => {
+    //   broccoli.classList.remove("broccoli-hit");
+    // }, 500);
+  }
+
+  growInGround(targetNum) {
+    // if (this.growing === false) {
+    //   for (let i = 0; i < Math.random() * 50; i++) {
+    //     this.moveTarget();
+    //   }
+    // }
+    const broccoli = document.getElementById(`broccoli-${targetNum}`);
+    // change growing image (if prev hit, grow rotten)
+    if (!this.broccoliWasHit) {
+      broccoli.classList.add("broccoli-growing");
+    } else {
+      broccoli.classList.add("broccoli-growing-hit");
+    }
+    // this.growing = true;
+  }
 }

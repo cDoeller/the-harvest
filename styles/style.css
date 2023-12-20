@@ -86,7 +86,7 @@ main {
 #score {
     font-size: 3.5em;
     position: absolute;
-    right: 20px;
+    right: 30px;
     top: 20px;
 }
 
@@ -116,4 +116,28 @@ main {
     background-size: cover;
     background-repeat: no-repeat;
     position: relative;
+}
+
+.belloon-explode {
+  background-image: url("../img/explosion.png");
+}
+
+.broccoli-hit {
+  background-image: url("../img/BROCCOLI-rope-rotten.png");
+}
+
+.broccoli-falling{
+  background-image: url("../img/BROCCOLI-falling.png");
+}
+
+.broccoli-rotten-falling {
+  background-image: url("../img/BROCCOLI-rope-rotten-falling.png");
+}
+
+.broccoli-growing {
+  background-image: url("../img/BROCCOLI-ground.png");
+}
+
+.broccoli-growing-hit {
+  background-image: url("../img/BROCCOLI-rope-rotten-growing.png");
 }
