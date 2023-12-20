@@ -114,7 +114,13 @@ class Target {
     const balloon = document.getElementById(`${balloonId}`);
     const target = document.getElementById(`${targetId}`);
     const broccoli = document.getElementById(`${broccoliId}`);
+    // put smallest in front
+    if (this.scaleFactor == 5) broccoli.style.zIndex = "3";
+    if (this.scaleFactor == 10) broccoli.style.zIndex = "2";
+    if (this.scaleFactor == 15) broccoli.style.zIndex = "1";
+    // make balloon explode
     balloon.classList.add("belloon-explode");
+    // broccoli stays rotten, generally changing to falling
     if (!this.broccoliWasHit) {
       broccoli.classList.add("broccoli-falling");
     } else {
