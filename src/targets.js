@@ -1,4 +1,5 @@
 class Target {
+
   constructor(
     spawnPositionX,
     spawnPositionY,
@@ -8,8 +9,8 @@ class Target {
   ) {
     this.spawnPositionX = spawnPositionX;
     this.spawnPositionY = spawnPositionY;
-    this.scaleFactor = scaleFactor; // later
-    this.speed = speed; // later
+    this.scaleFactor = scaleFactor; 
+    this.speed = speed;
     this.positionX = spawnPositionX; // initial pos at spawn pos
     this.positionY = spawnPositionY; // initial pos at spawn pos
     this.targetNumber = targetNumber;
@@ -19,7 +20,7 @@ class Target {
 
   makeTarget() {
     console.log("targets.js makeTarget");
-    console.log(`${this.positionX}`, `${this.positionX}`);
+    console.log(`${this.positionX}`, `${this.positionY}`);
 
     // make a target container element
     const targetContainer = document.createElement("div");
@@ -33,8 +34,8 @@ class Target {
     // style the target
     const targetWidth = 4 * this.scaleFactor;
     const targetHeight = 9 * this.scaleFactor;
-    targetContainer.style.width = `${targetWidth}em`;
-    targetContainer.style.height = `${targetHeight}em`;
+    targetContainer.style.width = `${targetWidth}px`;
+    targetContainer.style.height = `${targetHeight}px`;
     targetContainer.style.backgroundColor = "none";
     targetContainer.style.display = "none";
     // append target
@@ -66,7 +67,7 @@ class Target {
   }
 
   moveTarget() {
-    this.positionY++;
+    this.positionY+=this.speed;
   }
 
   displayTarget() {

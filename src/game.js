@@ -5,12 +5,17 @@ class Game {
     this.endScreen = document.getElementById("end-window");
 
     this.targets = [];
+    this.targetNumber = 0;
+    this.scaleFacotrs = [5,12,20]; // possible scale factors
+    this.maxSpeed = 2;
+    this.minSpeed = 1;
+    this.spawnTargetBottom = 200; // spawning always at same y height
     this.score = 0;
     this.countdown = maxTime;
     this.gameIsOver = false;
 
     // scores for different sizes + penalty
-    this.penalty = 5;
+    this.penaltyVanish = 5;
     this.scoreSmall = 15;
     this.scoreMedium = 10;
     this.scoreLarge = 15;
@@ -26,7 +31,29 @@ class Game {
     this.startScreen.style.display = "none";
     this.gameScreen.style.display = "block";
 
-    this.targets[0] = new Target(600, 200, 1, 1, 1);
+    // MAKE INITIAL TARGETS
+    // constructor(
+    //   spawnPositionX,
+    //   spawnPositionY,
+    //   scaleFactor, ------> [0.5, 1, 1.5]
+    //   speed,
+    //   targetNumber
+    // )
+    // get random scale factor
+    const randScaleFactorIndex = Math.floor(Math.random() * 3);
+    const currentScaleFacotr = this.scaleFacotrs[randScaleFactorIndex];
+    console.log (`current factor: ${currentScaleFacotr}`);
+    // get a random spawn position
+    // only in window width, at certain Y height above ground
+    const randSpawnPosX = Math.random() * (window.innerWidth-(currentScaleFacotr*4));
+    // get random speed
+    // Math.random() * (max - min) + min;
+    const randSpeed = Math.random() * (this.maxSpeed - this.minSpeed) + this.minSpeed; 
+    console.log (`speed: ${randSpeed}`);
+    // increase target number
+    this.targetNumber = 0; // **** 
+    // make the targets and put in array
+    this.targets[0] = new Target(randSpawnPosX, this.spawnTargetBottom, currentScaleFacotr, randSpeed, this.targetNumber);
     this.targets[0].makeTarget();
 
     // start interval for countdown
@@ -74,7 +101,7 @@ class Game {
       // erase
       if (target.isGone() === true) {
         // penalty points
-        this.score -= this.penalty;
+        this.score -= this.penaltyVanish;
         console.log(this.score);
         // delete from array
         this.targets.splice(index, 1);
