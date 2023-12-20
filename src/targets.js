@@ -85,4 +85,8 @@ class Target {
         return false;
     }
   }
+
+  ballooniHit(){}
+
+  broccoliHit(){}
 }

@@ -4,25 +4,28 @@ class Game {
     this.gameScreen = document.getElementById("game-window");
     this.endScreen = document.getElementById("end-window");
 
+    // targets
     this.targets = [];
-    this.targetNumber = 0;
-    this.scaleFacotrs = [5,12,20]; // possible scale factors
-    this.maxSpeed = 2;
-    this.minSpeed = 1;
-    this.spawnTargetBottom = 200; // spawning always at same y height
-    this.score = 0;
+    this.targetID = 0;
+    this.targetAmount = 10;
+    this.scaleFacotrs = [5, 15, 25]; // possible scale factors
+    this.maxSpeed = 1.2;
+    this.minSpeed = 0.5;
+    this.spawnTargetBottom = 100; // spawning always at same y height
+
+    // general game mechanics
     this.countdown = maxTime;
     this.gameIsOver = false;
 
     // scores for different sizes + penalty
+    this.score = 0;
     this.penaltyVanish = 5;
     this.scoreSmall = 15;
     this.scoreMedium = 10;
-    this.scoreLarge = 15;
+    this.scoreLarge = 5;
 
     // global ID for interval
     this.intervalID;
-    this.displayTime(); // display time in beginning
   }
 
   start() {
@@ -31,36 +34,17 @@ class Game {
     this.startScreen.style.display = "none";
     this.gameScreen.style.display = "block";
 
-    // MAKE INITIAL TARGETS
-    // constructor(
-    //   spawnPositionX,
-    //   spawnPositionY,
-    //   scaleFactor, ------> [0.5, 1, 1.5]
-    //   speed,
-    //   targetNumber
-    // )
-    // get random scale factor
-    const randScaleFactorIndex = Math.floor(Math.random() * 3);
-    const currentScaleFacotr = this.scaleFacotrs[randScaleFactorIndex];
-    console.log (`current factor: ${currentScaleFacotr}`);
-    // get a random spawn position
-    // only in window width, at certain Y height above ground
-    const randSpawnPosX = Math.random() * (window.innerWidth-(currentScaleFacotr*4));
-    // get random speed
-    // Math.random() * (max - min) + min;
-    const randSpeed = Math.random() * (this.maxSpeed - this.minSpeed) + this.minSpeed; 
-    console.log (`speed: ${randSpeed}`);
-    // increase target number
-    this.targetNumber = 0; // **** 
-    // make the targets and put in array
-    this.targets[0] = new Target(randSpawnPosX, this.spawnTargetBottom, currentScaleFacotr, randSpeed, this.targetNumber);
-    this.targets[0].makeTarget();
+    // display time in very beginning
+    this.displayTime();
+
+    // spawn initial targets
+    this.spawnTargtes(this.targetAmount);
 
     // start interval for countdown
     this.intervalID = setInterval(() => {
       this.countdown--;
       this.displayTime();
-      console.log(this.countdown);
+      //console.log(this.countdown);
     }, 1000);
 
     // Start the game loop
@@ -71,6 +55,7 @@ class Game {
     // stop when countdown === 0
     if (this.countdown <= 0) {
       console.log("time is up");
+      console.log (this.targets);
       this.gameIsOver = true;
       clearInterval(this.intervalID);
     }
@@ -89,25 +74,41 @@ class Game {
   }
 
   updateGame() {
-    // loop through targets
+    // loop through all targets
     // 1. move up
     // 2. display
     // 3. erase
     this.targets.forEach((target, index) => {
+      // target gone
+      if (target.isGone() === true) {
+        // penalty points
+        this.score -= this.penaltyVanish;
+        console.log(`removed ${this.score}`);
+        // delete from array
+        this.targets.splice(index, 1);
+        //console.log("removed");
+        //console.log(this.targets);
+        // no further displaying for this target
+        return;
+      }
+      // // target hit (balloon)
+      // if (target.balloonHit() === true) {
+      //   // score points
+      //   if (target.scaleFactor === this.scaleFacotrs[0]) this.score += this.scoreSmall;
+      //   if (target.scaleFactor === this.scaleFacotrs[1]) this.score += this.scoreMedium;
+      //   if (target.scaleFactor === this.scaleFacotrs[2]) this.score += this.scoreLarge;
+      //   console.log(`balloon hit ${this.score}`);
+      // }
+      // // target hit (broccoli)
+      // if (target.broccoliHit() === true) {
+      //   // penalty points
+      //   this.score -= this.penaltyVanish;
+      //   console.log(`broccoli hit ${this.score}`);
+      // }
       // move
       target.moveTarget();
       // display
       target.displayTarget();
-      // erase
-      if (target.isGone() === true) {
-        // penalty points
-        this.score -= this.penaltyVanish;
-        console.log(this.score);
-        // delete from array
-        this.targets.splice(index, 1);
-        console.log("removed");
-        console.log(this.targets);
-      }
     });
 
     this.displayScore();
@@ -143,6 +144,43 @@ class Game {
       timeString = `0:00`;
     }
     timeH1.innerHTML = `${timeString}`;
+  }
+
+  spawnTargtes(amount) {
+    // constructor(
+    //   spawnPositionX,
+    //   spawnPositionY,
+    //   scaleFactor, ------> [0.5, 1, 1.5]
+    //   speed,
+    //   targetNumber
+    // )
+    for (let i = 0; i < amount; i++) {
+      // define random Properties of targets
+      // get random scale factor (size of target)
+      const randScaleFactorIndex = Math.floor(Math.random() * 3);
+      const currentScaleFacotr = this.scaleFacotrs[randScaleFactorIndex];
+      console.log(`current factor: ${currentScaleFacotr}`);
+      // get a random spawn position only in window width, at certain Y height above ground
+      const randSpawnPosX =
+        Math.random() * (window.innerWidth - currentScaleFacotr * 4);
+      // get random speed: Math.random() * (max - min) + min;
+      const randSpeed =
+        Math.random() * (this.maxSpeed - this.minSpeed) + this.minSpeed;
+      console.log(`speed: ${randSpeed}`);
+
+      // make the targets and put in array
+      const tempTarget = new Target(
+        randSpawnPosX,
+        this.spawnTargetBottom,
+        currentScaleFacotr,
+        randSpeed,
+        this.targetID
+      );
+      tempTarget.makeTarget();
+      this.targets.push(tempTarget);
+      // increase target number
+      this.targetID++; // ****
+    }
   }
 
   endGame() {
