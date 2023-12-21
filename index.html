@@ -11,10 +11,19 @@
 <body>
     <main>
         <!-- initially shown: start window -->
-        <div id="start-window">
-            <h1 class="start-game-title"> The Harvest</h1>
-            <p id="start-text" class="normal-text">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolorem asperiores ad cumque non atque officia eum quo eveniet ipsa pariatur, odit ipsam nulla, exercitationem sed voluptas illum eaque veritatis repudiandae.</p>
-            <button id="start-button" class="button">start game</button>
+        <div id="start-window" class="start-background">
+            <div id="start-window-container" class="start-end-container">
+                <h1 class="start-game-title"> The Harvest</h1>
+                <p id="start-text" class="normal-text">We finally found a way to brocco-bloom the desert! <br> ..if there was not an evil force that sends our precious broccolis upwards via helium balloons. <br> We need your help! <br> You can become a hero, brocco-bloom the desert and collect points for your ego. <br> Left-click to throw a dart and make the balloons explode! <br> But be aware: do not hit the ascending broccolis or they will rot and you will receive the penalty you deserve. You have 20 seconds, we count on you!!</p>
+                <button id="start-button" class="button">start game</button>
+            </div>
+        </div>
+        <div id="end-window" class="end-background">
+            <div id="end-window-container" class="start-end-container">
+                <h1 class="start-game-title">the time is up!</h1>
+                <p id="end-text" class="normal-text">est itaque.</p>
+                <button id="restart-button" class="button">play again</button>
+            </div>   
         </div>
         <div id="game-window">
             <div id="game-screen">
@@ -27,11 +36,6 @@
                 </div>
             </div>
         </div>
-        <div id="end-window">
-            <h1 class="start-game-title"> The Harvest</h1>
-            <p id="end-text" class="normal-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio molestiae, impedit quos excepturi at ut voluptate placeat fugiat maxime ducimus corrupti debitis molestias totam assumenda nobis ipsa, eligendi est itaque.</p>
-            <button id="restart-button" class="button">play again</button>
-        </div>   
     </main>
     <!-- sequence: game needs tagets, index needs game -->
     <script src="./src/targets.js"></script>

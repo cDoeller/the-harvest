@@ -28,8 +28,18 @@ class Game {
   }
 
   // ** START FUNCTION
-  start() {
-    console.log("game.js start function");
+  start(isRestarting) {
+    console.log (isRestarting);
+    // get rid of old objects for restart game
+    if (isRestarting===true){
+      const targetsClasses = document.getElementsByClassName("target-container");
+      let targets = [...targetsClasses];
+      targets.forEach((target)=>{
+        target.remove();
+      });
+      this.targets = [];
+    }
+    
     // hide the start screen, show game screen
     this.startScreen.style.display = "none";
     this.gameScreen.style.display = "block";
@@ -44,7 +54,6 @@ class Game {
     this.mainIntervalID = setInterval(() => {
       this.countdown--;
       this.displayTime();
-      //console.log(this.countdown);
     }, 1000);
 
     // add listener for entire window clicks
@@ -59,7 +68,7 @@ class Game {
 
   // ** GAME LOOP FUNCTION
   gameLoop() {
-    // stop when countdown === 0
+    // GAME IS OVER --> stop when countdown === 0
     if (this.countdown <= 0) {
       console.log("time is up");
       //console.log(this.targets);
@@ -70,7 +79,7 @@ class Game {
     // Interrupt the function to stop the loop if "gameIsOver" is set to "true"
     if (this.gameIsOver) {
       this.displayStats();
-      //call endGame();
+      this.endGame();
       return;
     }
 
@@ -171,13 +180,15 @@ class Game {
   }
 
   // display all the stats
+  // ******* PROBLEMS
   displayStats() {
     const missed = this.clickCount - this.balloonsHit - this.broccolisHit;
-    console.log(`your stats: \n 
-    darts thrown: ${this.clickCount} \n
-    targets hit: ${this.balloonsHit}\n
-    broccolis hit: ${this.broccolisHit}\n
-    missed darts: ${missed}`);
+    return (`<p class="score-text"> YOUR STATS </p>
+    <p class="score-text">Darts Thrown: ${this.clickCount}</p> 
+    <p class="score-text">Targets Hit: ${this.balloonsHit}</p>
+    <p class="score-text">Broccolis Hit: ${this.broccolisHit}</p>
+    <p class="score-text">Missed Darts: ${missed}</p>
+    <span class="score-text" id="#score-text-special">TOTAL SCORE: ${this.score} </span>`);
   }
 
   spawnTargtes(amount) {
@@ -221,6 +232,11 @@ class Game {
   }
 
   endGame() {
-    console.log("game.js end function");
+    const endScreen = document.getElementById ("end-window");
+    endScreen.style.display = "flex";
+    const endScreenText = document.getElementById ("end-text");
+    const stats = this.displayStats();
+    endScreenText.innerHTML = stats;
+    console.log ("in end game")
   }
 }

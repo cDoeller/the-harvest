@@ -26,7 +26,7 @@ class Target {
     this.balloonID = "";
 
     // speed for falling down
-    this.fallingSpeed = 5; 
+    this.fallingSpeed = 10; 
 
     this.balloonIsHit = false;
     this.broccoliIsHit = false;

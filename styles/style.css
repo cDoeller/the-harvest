@@ -12,66 +12,105 @@ div {
 main {
   width: 100vw;
   height: 100vh;
+  position: relative;
+}
+
+#start-window {
+  /* switch to none / flex for testing */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 #end-window {
-    background-color: green;
-    display: none;
-  }
+  /* switch to none / flex for testing */
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  position: absolute;
+}
 
 #game-window {
-    /* for testing */
-  display: block; 
+  /* switch to block for testing */
+  display: none;
   height: 100vh;
   width: 100vw;
 }
-#start-window {
+
+.start-end-container {
+  width: 60%;
+  min-height: 50vh;
+  padding: 40px 40px 60px 40px;
+  border-radius: 40px;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.end-background {
+  height: 100vh;
+  width: 100vw;
+  background-color: transparent;
+  /* switch to none for testing */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* START SCREEN */
+
+.start-background {
   height: 100vh;
   width: 100vw;
   background-image: url("../img/background-image.jpg");
   background-position: bottom; /*here bottom*/
   background-size: cover;
   background-repeat: no-repeat;
+  /* switch to none for testing */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  /* for testing */
-  display: none;
 }
-
-/* START SCREEN */
 
 .start-game-title {
   font-size: 3em;
   text-transform: uppercase;
+  color: white;
 }
 
 .normal-text {
-  margin-top: 30px;
-  width: 50%;
-  font-size: 2em;
-  text-align: center;
+  margin-top: 20px;
+  width: 100%;
+  font-size: 1.8em;
+  text-align:center;
+  color: white;
 }
 
 .button {
-    margin-top: 30px;
-    font-size: 2em;
-    border: none;
-    padding: 15px;
-    background-color: red;
-    color:white;
-    text-transform: uppercase;
-    border-radius: 10px;
+  margin-top: 40px;
+  font-size: 2em;
+  border: none;
+  padding: 15px;
+  background-color: red;
+  color: white;
+  text-transform: uppercase;
+  border-radius: 10px;
 }
 
 #restart-button {
-    background-color: blue;
+  background-color: blue;
 }
 
 /* GAME SCREEN */
 
-#time-up{
+#time-up {
   display: none;
 }
 
@@ -88,38 +127,38 @@ main {
 }
 
 #score {
-    font-size: 3.5em;
-    position: absolute;
-    right: 30px;
-    top: 20px;
+  font-size: 3.5em;
+  position: absolute;
+  right: 30px;
+  top: 20px;
 }
 
 #time {
-    font-size: 3.5em;
-    color: rgb(169, 97, 10);
-    position: absolute;
-    right: 45vw;
-    bottom: 20px;
+  font-size: 3.5em;
+  color: rgb(169, 97, 10);
+  position: absolute;
+  right: 45vw;
+  bottom: 20px;
 }
 
- /* .target {
+/* .target {
     position: absolute;
 }  */
 
 .balloon-class {
-    background-image: url("../img/balloon.png");
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    position: relative;
+  background-image: url("../img/balloon.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: relative;
 }
 
 .broccoli-class {
-    background-image: url("../img/BROCCOLI-rope.png");
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    position: relative;
+  background-image: url("../img/BROCCOLI-rope.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: relative;
 }
 
 .belloon-explode {
@@ -130,7 +169,7 @@ main {
   background-image: url("../img/BROCCOLI-rope-rotten.png");
 }
 
-.broccoli-falling{
+.broccoli-falling {
   background-image: url("../img/BROCCOLI-falling.png");
 }
 
@@ -144,4 +183,15 @@ main {
 
 .broccoli-growing-hit {
   background-image: url("../img/BROCCOLI-rope-rotten-growing.png");
+}
+
+.score-text{
+  font-size: 1.2em;
+}
+
+#score-text-special{
+  margin-top: 5px;
+  background-color: red;
+  padding: 5px;
+  color: red;
 }

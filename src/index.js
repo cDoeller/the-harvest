@@ -5,20 +5,21 @@ window.onload = function () {
 
   // add listener to start button
   // call function to start the game
-  startGame(); // only for testing -----> maxTime in brackets
+  //***startGame(); // only for testing
 
   startButton.addEventListener("click", function () {
-    startGame();
+    startGame(false); // (isRestarting)
   });
   restartButton.addEventListener("click", function () {
-    startGame();
+    const endScreen = document.getElementById("end-window");
+    endScreen.style.display = "none";
+    startGame(true);
   });
 
-  function startGame() {
-    console.log("index.js startGame function");
+  function startGame(isRestarting) {
     // creating a new instance of the game class
-    game = new Game(20); // -----> maxTime in brackets
+    game = new Game(5); // -----> maxTime in brackets
     // call the start game method
-    game.start();
+    game.start(isRestarting);
   }
 };
