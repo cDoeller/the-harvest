@@ -7,7 +7,6 @@ class Target {
     speed,
     targetNumber
   ) {
-
     // assign variables to object
     this.spawnPositionX = spawnPositionX;
     this.spawnPositionY = spawnPositionY;
@@ -20,13 +19,13 @@ class Target {
     this.positionX = spawnPositionX;
     this.positionY = spawnPositionY;
 
-    // save the entire ID 
+    // save the entire ID
     this.targetID = "";
     this.broccoliID = "";
     this.balloonID = "";
 
     // speed for falling down
-    this.fallingSpeed = 10; 
+    this.fallingSpeed = 10;
 
     this.balloonIsHit = false;
     this.broccoliIsHit = false;
@@ -36,6 +35,11 @@ class Target {
 
     // get game screen for appending targets
     this.gameScreen = document.getElementById("game-screen");
+
+    // activate or deactivate target reactions
+    // done from updateGame() in game class
+    // not so elegant, I know.
+    this.mustReload = false;
   }
 
   makeTarget() {
@@ -123,6 +127,8 @@ class Target {
   }
 
   ballooniHit() {
+    // do not react if we have to reload
+    if (this.mustReload) return;
     // change state
     this.balloonIsHit = true;
     this.targetRising = false;
@@ -150,6 +156,8 @@ class Target {
   }
 
   broccoliHit() {
+    // do not react if we have to reload
+    if (this.mustReload) return;
     // change state
     this.broccoliIsHit = true;
     this.broccoliWasHit = true;

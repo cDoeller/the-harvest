@@ -170,7 +170,7 @@ button {
 
 #time {
   font-size: 3.5em;
-  color: rgb(169, 97, 10);
+  color: red;
   position: absolute;
   right: 45vw;
   bottom: 20px;

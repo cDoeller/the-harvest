@@ -34,28 +34,12 @@ class Game {
 
   // ** START FUNCTION
   start(isRestarting) {
-    // get rid of old objects for restart game
-    if (isRestarting === true) {
-      const targetsClasses =
-        document.getElementsByClassName("target-container");
-      let targets = [...targetsClasses];
-      targets.forEach((target) => {
-        target.remove();
-      });
-      this.targets = [];
-      this.targetID = 0;
-      this.score = 0;
-      this.balloonsHit = 0;
-      this.broccolisHit = 0;
-      this.clickCount = 0;
-      this.dartsLeft = 8;
-      this.mustReload = false;
-      this.updateDartVisuals(true);
-    }
-
     // hide the start screen, show game screen
     this.startScreen.style.display = "none";
     this.gameScreen.style.display = "block";
+
+    // check if restart and go to restart method
+    if (isRestarting === true) this.restart();
 
     // display time in first moments of game
     this.displayTime();
@@ -75,9 +59,9 @@ class Game {
       this.clickCount++;
     });
 
-    // add listener for entire window clicks + reloading mechanism
+    // add listener for reloading mechanism
     window.addEventListener("keydown", () => {
-      if (event.key === "a"){
+      if (event.key === "a") {
         this.reload();
       }
     });
@@ -114,6 +98,8 @@ class Game {
   updateGame() {
     // loop through all targets
     this.targets.forEach((target, index) => {
+      // if game is not running anymore
+      target.mustReload = this.mustReload;
       // ** TARGET GONE
       if (target.isGone() === true) {
         // penalty points
@@ -169,13 +155,13 @@ class Game {
     let scoreString = "";
     if (this.score < 1000 && this.score >= 100) {
       scoreString = `0${Math.abs(this.score)}`;
-      scoreH1.style.color = "rgb(0, 0, 137)";
+      scoreH1.style.color = "blue";
     } else if (this.score < 100 && this.score >= 10) {
       scoreString = `00${Math.abs(this.score)}`;
-      scoreH1.style.color = "rgb(0, 0, 137)";
+      scoreH1.style.color = "blue";
     } else if (this.score < 10 && this.score >= 0) {
       scoreString = `000${Math.abs(this.score)}`;
-      scoreH1.style.color = "rgb(0, 0, 137)";
+      scoreH1.style.color = "blue";
     } else if (this.score < 0 && this.score > -10) {
       scoreString = `000${Math.abs(this.score)}`;
       scoreH1.style.color = "red";
@@ -199,7 +185,7 @@ class Game {
     timeH1.innerHTML = `${timeString}`;
   }
 
-  // display all the stats
+  // DISPLAY STATS
   // ******* PROBLEMS
   displayStats() {
     const missed = this.clickCount - this.balloonsHit - this.broccolisHit;
@@ -251,24 +237,20 @@ class Game {
     }
   }
 
+  // CHECK AVAILABLE DART AMOUNT
   checkDarts() {
+    // dont do this if game is over
+    if (this.gameIsOver) return;
     // decrease number of available darts
     // if empty, mustReload = 1
-    if (this.dartsLeft > 0) {
-      this.dartsLeft--;
-    } else {
-      this.mustReload = true;
-    }
-    console.log(this.dartsLeft);
-    // if still darts available
-    if (this.mustReload === false) {
-      // update the active / inactive darts
-      this.updateDartVisuals(false);
-    } else {
-      console.log(`mustReloade is ${this.mustReload}`);
-    }
+    if (this.dartsLeft > 0) this.dartsLeft--;
+    // update the active / inactive darts
+    if (this.mustReload === false) this.updateDartVisuals(false);
+    // stop updating if no more darts
+    if (this.dartsLeft <= 0) this.mustReload = true;
   }
 
+  // RELOAD method
   reload() {
     // update visual reloaded
     this.updateDartVisuals(true);
@@ -277,8 +259,9 @@ class Game {
     this.dartsLeft = this.maxDarts;
   }
 
-  // update the dart visuals
+  // DART VISUALS UPDATE
   updateDartVisuals(shouldReload) {
+    if (this.gameIsOver) return; // prevent from running when over
     const dartElements = document.getElementsByClassName("dart");
     const dartElementsArray = [...dartElements];
     if (shouldReload === false) {
@@ -294,6 +277,26 @@ class Game {
     }
   }
 
+  // ** RESTART method
+  restart() {
+    // get rid of old objects for restart game
+    const targetsClasses = document.getElementsByClassName("target-container");
+    let targets = [...targetsClasses];
+    targets.forEach((target) => {
+      target.remove();
+    });
+    this.targets = [];
+    this.targetID = 0;
+    this.score = 0;
+    this.balloonsHit = 0;
+    this.broccolisHit = 0;
+    this.clickCount = 0;
+    this.dartsLeft = 8;
+    this.mustReload = false;
+    this.updateDartVisuals(true);
+  }
+
+  // switch to end screen
   endGame() {
     const endScreen = document.getElementById("end-window");
     endScreen.style.display = "flex";
