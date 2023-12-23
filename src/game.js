@@ -23,23 +23,36 @@ class Game {
     this.broccolisHit = 0;
     this.clickCount = 0;
 
+    // darts
+    this.maxDarts = 8;
+    this.dartsLeft = 8;
+    this.mustReload = false;
+
     // global ID for interval
     this.mainIntervalID;
   }
 
   // ** START FUNCTION
   start(isRestarting) {
-    console.log (isRestarting);
     // get rid of old objects for restart game
-    if (isRestarting===true){
-      const targetsClasses = document.getElementsByClassName("target-container");
+    if (isRestarting === true) {
+      const targetsClasses =
+        document.getElementsByClassName("target-container");
       let targets = [...targetsClasses];
-      targets.forEach((target)=>{
+      targets.forEach((target) => {
         target.remove();
       });
       this.targets = [];
+      this.targetID = 0;
+      this.score = 0;
+      this.balloonsHit = 0;
+      this.broccolisHit = 0;
+      this.clickCount = 0;
+      this.dartsLeft = 8;
+      this.mustReload = false;
+      this.updateDartVisuals(true);
     }
-    
+
     // hide the start screen, show game screen
     this.startScreen.style.display = "none";
     this.gameScreen.style.display = "block";
@@ -56,10 +69,17 @@ class Game {
       this.displayTime();
     }, 1000);
 
-    // add listener for entire window clicks
+    // add listener for entire window clicks + reloading mechanism
     window.addEventListener("mousedown", () => {
+      this.checkDarts();
       this.clickCount++;
-      console.log(this.clickCount);
+    });
+
+    // add listener for entire window clicks + reloading mechanism
+    window.addEventListener("keydown", () => {
+      if (event.key === "a"){
+        this.reload();
+      }
     });
 
     // Start the game loop
@@ -121,7 +141,7 @@ class Game {
         // penalty points
         this.score -= target.score;
         // increase broccoli hit
-        this.broccolisHit ++;
+        this.broccolisHit++;
         // reset the hit flag of broccoli
         target.broccoliIsHit = false;
       }
@@ -183,12 +203,12 @@ class Game {
   // ******* PROBLEMS
   displayStats() {
     const missed = this.clickCount - this.balloonsHit - this.broccolisHit;
-    return (`<p class="score-text"> YOUR STATS </p>
+    return `
     <p class="score-text">Darts Thrown: ${this.clickCount}</p> 
-    <p class="score-text">Targets Hit: ${this.balloonsHit}</p>
+    <p class="score-text">Balloons Hit: ${this.balloonsHit}</p>
     <p class="score-text">Broccolis Hit: ${this.broccolisHit}</p>
-    <p class="score-text">Missed Darts: ${missed}</p>
-    <span class="score-text" id="#score-text-special">TOTAL SCORE: ${this.score} </span>`);
+    <p class="score-text">Missed Darts: ${missed}</p> <br>
+    <span class="score-text" id="#score-text-special">TOTAL SCORE <br> ${this.score} </span>`;
   }
 
   spawnTargtes(amount) {
@@ -231,12 +251,55 @@ class Game {
     }
   }
 
+  checkDarts() {
+    // decrease number of available darts
+    // if empty, mustReload = 1
+    if (this.dartsLeft > 0) {
+      this.dartsLeft--;
+    } else {
+      this.mustReload = true;
+    }
+    console.log(this.dartsLeft);
+    // if still darts available
+    if (this.mustReload === false) {
+      // update the active / inactive darts
+      this.updateDartVisuals(false);
+    } else {
+      console.log(`mustReloade is ${this.mustReload}`);
+    }
+  }
+
+  reload() {
+    // update visual reloaded
+    this.updateDartVisuals(true);
+    // reset boolean and counter
+    this.mustReload = false;
+    this.dartsLeft = this.maxDarts;
+  }
+
+  // update the dart visuals
+  updateDartVisuals(shouldReload) {
+    const dartElements = document.getElementsByClassName("dart");
+    const dartElementsArray = [...dartElements];
+    if (shouldReload === false) {
+      // decrease available darts visually
+      dartElementsArray[this.dartsLeft].classList.remove("dart-active");
+      dartElementsArray[this.dartsLeft].classList.add("dart-inactive");
+    } else {
+      // fully reloaded visuals
+      dartElementsArray.forEach((dart) => {
+        dart.classList.remove("dart-inactive");
+        dart.classList.add("dart-active");
+      });
+    }
+  }
+
   endGame() {
-    const endScreen = document.getElementById ("end-window");
+    const endScreen = document.getElementById("end-window");
     endScreen.style.display = "flex";
-    const endScreenText = document.getElementById ("end-text");
+    const endScreenText = document.getElementById("end-text");
     const stats = this.displayStats();
     endScreenText.innerHTML = stats;
-    console.log ("in end game")
+    console.log("in end game");
   }
 }

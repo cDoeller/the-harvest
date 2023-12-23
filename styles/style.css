@@ -1,3 +1,8 @@
+:root {
+  --dartScale: 1.5; /*change for size of darts*/
+  --dartPos: 2.25;
+}
+
 html,
 body,
 h1,
@@ -6,7 +11,6 @@ div {
   margin: 0;
   padding: 0;
   font-size: 14px;
-  font-family: "Dangrek";
 }
 
 main {
@@ -15,17 +19,23 @@ main {
   position: relative;
 }
 
+/* MOUSE CURSOR */
+
+body {
+  cursor: url(../img/crosshair.png) 15 15, auto;
+}
+
+/* CONTAINERS */
+
 #start-window {
-  /* switch to none / flex for testing */
-  display: flex;
+  display: none; /* switch to none / flex for testing */
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
 #end-window {
-  /* switch to none / flex for testing */
-  display: none;
+  display: none; /* switch to none / flex for testing */
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -34,8 +44,7 @@ main {
 }
 
 #game-window {
-  /* switch to block for testing */
-  display: none;
+  display: block; /* switch to block for testing */
   height: 100vh;
   width: 100vw;
 }
@@ -63,7 +72,7 @@ main {
   align-items: center;
 }
 
-/* START SCREEN */
+/* START / END SCREENS */
 
 .start-background {
   height: 100vh;
@@ -79,29 +88,13 @@ main {
   align-items: center;
 }
 
-.start-game-title {
-  font-size: 3em;
-  text-transform: uppercase;
-  color: white;
-}
-
-.normal-text {
-  margin-top: 20px;
-  width: 100%;
-  font-size: 1.8em;
-  text-align:center;
-  color: white;
-}
-
 .button {
   margin-top: 40px;
-  font-size: 2em;
   border: none;
-  padding: 15px;
+  padding: 10px 20px;
   background-color: red;
-  color: white;
-  text-transform: uppercase;
   border-radius: 10px;
+  cursor: url(../img/explosion-cursor.png) 25 25, auto;
 }
 
 #restart-button {
@@ -114,9 +107,7 @@ main {
   display: none;
 }
 
-/* canvas for actual game */
 #game-screen {
-  /* background-color: green; */
   width: 100vw;
   height: 100vh;
   background-image: url("../img/background-image.jpg");
@@ -125,6 +116,50 @@ main {
   background-repeat: no-repeat;
   position: relative;
 }
+
+/* TEXT */
+
+h1 {
+  font-family: "Dangrek";
+}
+
+p {
+  font-family: "Manrope";
+}
+
+.start-game-title {
+  font-size: 3em;
+  text-transform: uppercase;
+  color: white;
+}
+
+.normal-text {
+  margin-top: 20px;
+  width: 100%;
+  font-size: 1.8em;
+  text-align: center;
+  color: white;
+}
+
+button {
+  font-family: "Dangrek";
+  font-size: 2.4em;
+  color: white;
+  text-transform: uppercase;
+}
+
+.score-text {
+  font-size: 1.2em;
+}
+
+/* #score-text-special{
+  margin-top: 5px;
+  background-color: red;
+  padding: 5px;
+  color: red;
+} */
+
+/* SCORE / COUNTER */
 
 #score {
   font-size: 3.5em;
@@ -141,9 +176,7 @@ main {
   bottom: 20px;
 }
 
-/* .target {
-    position: absolute;
-}  */
+/* SPRITES */
 
 .balloon-class {
   background-image: url("../img/balloon.png");
@@ -185,13 +218,74 @@ main {
   background-image: url("../img/BROCCOLI-rope-rotten-growing.png");
 }
 
-.score-text{
-  font-size: 1.2em;
+/* DARTS */
+/* 450 x 600 format */
+#dart-container {
+  height: calc(var(--dartScale)*6em);
+  position: absolute;
+  top: 50px;
+  left: 50px;
+  display: block; 
+}
+.dart {
+  width: calc(var(--dartScale)*4.5em);
+  height: 100%;
+  /* let clicks through */
+  pointer-events: none;
+}
+#dart1 {
+  position: absolute;
+  left: calc(0em*var(--dartPos));
+  top: 0;
+}
+#dart2 {
+  position: absolute;
+  left: calc(1em * var(--dartPos));
+  top: 0;
+}
+#dart3 {
+  position: absolute;
+  left: calc(2em * var(--dartPos));
+  top: 0;
+}
+#dart4 {
+  position: absolute;
+  left: calc(3em * var(--dartPos));
+  top: 0;
+}
+#dart5 {
+  position: absolute;
+  left: calc(4em * var(--dartPos));
+  top: 0;
+}
+#dart6 {
+  position: absolute;
+  left: calc(5em * var(--dartPos));
+  top: 0;
+}
+#dart7 {
+  position: absolute;
+  left: calc(6em * var(--dartPos));
+  top: 0;
+}
+#dart8 {
+  position: absolute;
+  left: calc(7em * var(--dartPos));
+  top: 0;
 }
 
-#score-text-special{
-  margin-top: 5px;
-  background-color: red;
-  padding: 5px;
-  color: red;
+.dart-active {
+  background-image: url("../img/dart-active.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: relative;
+}
+
+.dart-inactive {
+  background-image: url("../img/dart-inactive.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: relative;
 }

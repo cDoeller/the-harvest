@@ -5,7 +5,7 @@ window.onload = function () {
 
   // add listener to start button
   // call function to start the game
-  //***startGame(); // only for testing
+  startGame(false); // only for testing
 
   startButton.addEventListener("click", function () {
     startGame(false); // (isRestarting)
@@ -18,7 +18,7 @@ window.onload = function () {
 
   function startGame(isRestarting) {
     // creating a new instance of the game class
-    game = new Game(5); // -----> maxTime in brackets
+    game = new Game(2); // -----> maxTime in brackets
     // call the start game method
     game.start(isRestarting);
   }
