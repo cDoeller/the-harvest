@@ -36,16 +36,11 @@ class Target {
     // get game screen for appending targets
     this.gameScreen = document.getElementById("game-screen");
 
-    // activate or deactivate target reactions
-    // done from updateGame() in game class
-    // not so elegant, I know.
+    // activate or deactivate target reactions to clicks depending on reload
     this.mustReload = false;
   }
 
   makeTarget() {
-    // console.log("targets.js makeTarget");
-    // console.log(`${this.positionX}`, `${this.positionY}`);
-
     // make a target container element
     const targetContainer = document.createElement("div");
     targetContainer.className = "target-container";
@@ -89,17 +84,15 @@ class Target {
     broccoli.style.top = `${(5 / 9) * 100}%`;
     broccoli.style.width = "100%";
     broccoli.style.height = `${(4 / 9) * 100}%`;
-    // append balloon
-    targetContainer.appendChild(broccoli);
-
     // add event listeners
-    // pass specific id of elements
     balloon.addEventListener("mousedown", () => {
       this.ballooniHit();
     });
     broccoli.addEventListener("mousedown", () => {
       this.broccoliHit();
     });
+    // append balloon
+    targetContainer.appendChild(broccoli);
   }
 
   moveTarget() {
@@ -116,7 +109,6 @@ class Target {
     target.style.bottom = `${this.positionY}px`;
   }
 
-  // check if target is out of screen
   isGone() {
     if (this.positionY > window.innerHeight) {
       return true;
@@ -129,6 +121,10 @@ class Target {
   ballooniHit() {
     // do not react if we have to reload
     if (this.mustReload) return;
+    // sound
+    const balloonSound = new Audio("./sound/balloon.mp3"); // balloon
+    balloonSound.play();
+    console.log("balloon hit");
     // change state
     this.balloonIsHit = true;
     this.targetRising = false;
@@ -158,6 +154,9 @@ class Target {
   broccoliHit() {
     // do not react if we have to reload
     if (this.mustReload) return;
+    // sound
+    const broccoliSound = new Audio("./sound/broccoli.mp3"); // broccoli
+    broccoliSound.play();
     // change state
     this.broccoliIsHit = true;
     this.broccoliWasHit = true;
@@ -168,11 +167,15 @@ class Target {
 
   growInGround() {
     const broccoli = document.getElementById(`${this.broccoliID}`);
+    // sound
+    const growingSound = new Audio("./sound/growing.mp3"); // growing
+    growingSound.play();
     // change growing image (if prev hit, grow rotten)
     if (!this.broccoliWasHit) {
       broccoli.classList.add("broccoli-growing");
     } else {
       broccoli.classList.add("broccoli-growing-hit");
     }
+    this.growing = true;
   }
 }

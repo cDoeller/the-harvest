@@ -32,7 +32,6 @@ class Game {
     this.mainIntervalID;
   }
 
-  // ** START FUNCTION
   start(isRestarting) {
     // hide the start screen, show game screen
     this.startScreen.style.display = "none";
@@ -51,17 +50,35 @@ class Game {
     this.mainIntervalID = setInterval(() => {
       this.countdown--;
       this.displayTime();
+      if (this.countdown < 4 && this.countdown != 0) {
+        // sound
+        const counterSound = new Audio("./sound/counter.mp3"); // counter
+        counterSound.play();
+      }
     }, 1000);
 
     // add listener for entire window clicks + reloading mechanism
     window.addEventListener("mousedown", () => {
       this.checkDarts();
       this.clickCount++;
+      if (this.dartsLeft === 0 && !this.gameIsOver) {
+        // sound
+        const noDartsSound = new Audio("./sound/noDarts.mp3"); // no darts
+        noDartsSound.play();
+      } else {
+        // // sound
+        // const noDartsSound = new Audio("./sound/thrown.mp3"); // no darts
+        // noDartsSound.play();
+      }
     });
 
     // add listener for reloading mechanism
     window.addEventListener("keydown", () => {
-      if (event.key === "a") {
+      if (
+        event.key === "a" &&
+        !this.gameIsOver &&
+        this.dartsLeft < this.maxDarts
+      ) {
         this.reload();
       }
     });
@@ -70,7 +87,6 @@ class Game {
     this.gameLoop();
   }
 
-  // ** GAME LOOP FUNCTION
   gameLoop() {
     // GAME IS OVER --> stop when countdown === 0
     if (this.countdown <= 0) {
@@ -79,7 +95,6 @@ class Game {
       this.gameIsOver = true;
       clearInterval(this.mainIntervalID);
     }
-
     // Interrupt the function to stop the loop if "gameIsOver" is set to "true"
     if (this.gameIsOver) {
       this.displayStats();
@@ -113,6 +128,9 @@ class Game {
       }
       // ** TARGET HIT (balloon)
       if (target.balloonIsHit === true) {
+        // sound
+        const balloonSound = new Audio("./sound/balloon.mp3"); // balloon
+        balloonSound.play();
         // score points
         this.score += target.score;
         // increase targets hit
@@ -124,6 +142,9 @@ class Game {
       }
       // ** TARGET HIT (broccoli)
       if (target.broccoliIsHit === true) {
+        // sound
+        const broccoliSound = new Audio("./sound/broccoli.mp3"); // broccoli
+        broccoliSound.play();
         // penalty points
         this.score -= target.score;
         // increase broccoli hit
@@ -138,7 +159,12 @@ class Game {
         target.targetRising === false
       ) {
         // change to growing image on spawn line
-        target.growInGround();
+        if (!target.growing) {
+          target.growInGround();
+          // sound
+          const growingSound = new Audio("./sound/growing.mp3"); // growing
+          growingSound.play();
+        }
       } else {
         // if still moving -> rise up or fall down
         target.moveTarget();
@@ -162,11 +188,15 @@ class Game {
     } else if (this.score < 10 && this.score >= 0) {
       scoreString = `000${Math.abs(this.score)}`;
       scoreH1.style.color = "blue";
+
     } else if (this.score < 0 && this.score > -10) {
       scoreString = `000${Math.abs(this.score)}`;
       scoreH1.style.color = "red";
     } else if (this.score <= -10 && this.score >= -100) {
       scoreString = `00${Math.abs(this.score)}`;
+      scoreH1.style.color = "red";
+    } else if (this.score <= -100 && this.score >= -1000) {
+      scoreString = `0${Math.abs(this.score)}`;
       scoreH1.style.color = "red";
     }
     scoreH1.innerHTML = `SCORE ${scoreString}`;
@@ -190,22 +220,23 @@ class Game {
   displayStats() {
     const missed = this.clickCount - this.balloonsHit - this.broccolisHit;
     return `
-    <p class="score-text">Darts Thrown: ${this.clickCount}</p> 
-    <p class="score-text">Balloons Hit: ${this.balloonsHit}</p>
-    <p class="score-text">Broccolis Hit: ${this.broccolisHit}</p>
-    <p class="score-text">Missed Darts: ${missed}</p> <br>
-    <span class="score-text" id="#score-text-special">TOTAL SCORE <br> ${this.score} </span>`;
+    <li>Darts Thrown: ${this.clickCount}</li>
+    <li>Balloons Hit: ${this.balloonsHit}</li>
+    <li>Broccolis Hit: ${this.broccolisHit}</li>
+    <li>Missed Darts: ${missed}</li>
+    <li>Total Score: ${this.score}</li>`;
+  }
+
+  displayHighscores() {
+    return `
+    <li>Player Name ${this.score}, Score ${this.score}</li>
+    <li>Player Name ${this.score}, Score ${this.score}</li>
+    <li>Player Name ${this.score}, Score ${this.score}</li>
+    <li>Player Name ${this.score}, Score ${this.score}</li>
+    <li>Player Name ${this.score}, Score ${this.score}</li>`;
   }
 
   spawnTargtes(amount) {
-    // constructor(
-    //   spawnPositionX,
-    //   spawnPositionY,
-    //   scaleFactor, ------> [0.5, 1, 1.5]
-    //   score,
-    //   speed,
-    //   targetNumber
-    // )
     for (let i = 0; i < amount; i++) {
       // define random Properties of targets
       // get random scale factor (size of target)
@@ -222,6 +253,7 @@ class Game {
       //console.log(`speed: ${randSpeed}`);
 
       // make the targets and put in array
+      // spawnPositionX, spawnPositionY, scaleFactor[0.5, 1, 1.5], score, speed, targetNumber
       const tempTarget = new Target(
         randSpawnPosX,
         this.spawnTargetBottom,
@@ -230,7 +262,9 @@ class Game {
         randSpeed,
         this.targetID
       );
+      // call maketarget method
       tempTarget.makeTarget();
+      // add tot targets array
       this.targets.push(tempTarget);
       // increase target number
       this.targetID++; // ****
@@ -252,11 +286,15 @@ class Game {
 
   // RELOAD method
   reload() {
+    // sound
+    const reloadSound = new Audio("./sound/reload.mp3"); // reload
+    reloadSound.play();
     // update visual reloaded
     this.updateDartVisuals(true);
     // reset boolean and counter
     this.mustReload = false;
     this.dartsLeft = this.maxDarts;
+    console.log(this.sound);
   }
 
   // DART VISUALS UPDATE
@@ -300,9 +338,11 @@ class Game {
   endGame() {
     const endScreen = document.getElementById("end-window");
     endScreen.style.display = "flex";
-    const endScreenText = document.getElementById("end-text");
+    const highScoreText = document.getElementById("highscores");
+    const endScreenText = document.getElementById("stats");
     const stats = this.displayStats();
+    const highScores = this.displayHighscores();
     endScreenText.innerHTML = stats;
-    console.log("in end game");
+    highScoreText.innerHTML = highScores;
   }
 }

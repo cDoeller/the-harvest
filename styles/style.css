@@ -7,7 +7,9 @@ html,
 body,
 h1,
 p,
-div {
+div, 
+ul,ol,
+li {
   margin: 0;
   padding: 0;
   font-size: 14px;
@@ -28,7 +30,7 @@ body {
 /* CONTAINERS */
 
 #start-window {
-  display: none; /* switch to none / flex for testing */
+  display: flex; /* switch to none / flex for testing */
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -44,7 +46,7 @@ body {
 }
 
 #game-window {
-  display: block; /* switch to block for testing */
+  display: none; /* switch to block for testing */
   height: 100vh;
   width: 100vw;
 }
@@ -89,7 +91,7 @@ body {
 }
 
 .button {
-  margin-top: 40px;
+  margin-top: 50px;
   border: none;
   padding: 10px 20px;
   background-color: red;
@@ -117,13 +119,22 @@ body {
   position: relative;
 }
 
+/* END SCREEN */
+
+#score-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  margin-top: 30px;
+}
+
 /* TEXT */
 
 h1 {
   font-family: "Dangrek";
 }
 
-p {
+p, li {
   font-family: "Manrope";
 }
 
@@ -148,16 +159,24 @@ button {
   text-transform: uppercase;
 }
 
-.score-text {
-  font-size: 1.2em;
+.stats-scores {
+  width: 50%;
+  color: white;
+  text-align: center;
 }
 
-/* #score-text-special{
-  margin-top: 5px;
-  background-color: red;
-  padding: 5px;
-  color: red;
-} */
+.stats-scores li{
+  font-size: 1.8em;
+}
+
+#stats{
+  list-style: none;
+}
+
+#highscores{
+  list-style: decimal;
+  list-style-position: inside;
+}
 
 /* SCORE / COUNTER */
 
@@ -172,7 +191,7 @@ button {
   font-size: 3.5em;
   color: red;
   position: absolute;
-  right: 45vw;
+  left: 47vw;
   bottom: 20px;
 }
 
@@ -221,21 +240,21 @@ button {
 /* DARTS */
 /* 450 x 600 format */
 #dart-container {
-  height: calc(var(--dartScale)*6em);
+  height: calc(var(--dartScale) * 6em);
   position: absolute;
   top: 50px;
   left: 50px;
-  display: block; 
+  display: block;
 }
 .dart {
-  width: calc(var(--dartScale)*4.5em);
+  width: calc(var(--dartScale) * 4.5em);
   height: 100%;
   /* let clicks through */
   pointer-events: none;
 }
 #dart1 {
   position: absolute;
-  left: calc(0em*var(--dartPos));
+  left: calc(0em * var(--dartPos));
   top: 0;
 }
 #dart2 {
