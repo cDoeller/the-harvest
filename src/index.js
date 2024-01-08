@@ -22,7 +22,7 @@ window.onload = function () {
 
   function startGame() {
     // creating a new instance of the game class
-    game = new Game(2); // -----> maxTime in brackets
+    game = new Game(1); // -----> maxTime in brackets
     // call the start game method
     game.start(isRestarting);
   }

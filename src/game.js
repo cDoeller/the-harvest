@@ -19,9 +19,11 @@ class Game {
 
     // scores for different sizes + penalty
     this.score = 0;
+    this.name = "testName";
     this.balloonsHit = 0;
     this.broccolisHit = 0;
     this.clickCount = 0;
+    this.newHighscore = false;
 
     // darts
     this.maxDarts = 8;
@@ -303,34 +305,48 @@ class Game {
     this.updateDartVisuals(true);
   }
 
-  //update highscore                                                              ****
+  // update highscore
+  // *** fix highscore list order 
+  // *** name as user input
   updateHighscore() {
-    let storageScores = [];
-    // get stored highscores from local storage
-    for (let i = 1; i <= 5; i++) {
-      let tempObj = {};
-      tempObj.name = localStorage.getItem(`name${i}`);
-      tempObj.score = localStorage.getItem(`highscore${i}`);
-      if (tempObj.name == null) tempObj.name = "n/a";
-      if (tempObj.score == null) tempObj.score = 0;
-      storageScores.push(tempObj);
+
+    let scoreList = [];
+    let nameList = [];
+
+    // grab scores from local storage
+    for (let i = 0; i < 5; i++) {
+      // saved as score0, score1, score2, score3, score4
+      // saved as name0, name1, name2, name3, name4
+      let tempScore = localStorage.getItem(`score${i}`);
+      let tempName = localStorage.getItem(`name${i}`);
+      if (tempScore == null) tempScore = "0";
+      if (tempName == null) tempName = "n/a";
+      scoreList.push(parseInt(tempScore));
+      nameList.push(tempName);
     }
-    console.log(storageScores);
-    // compare stored highscores with current score
-    for (let i = 0; i < storageScores.length; i++) {
-      if (storageScores[i].score < this.score) {
-        storageScores[i].score = this.score;
-        storageScores[i].name = "testName";
+
+    // compare with current score
+    for (let i = 0; i < scoreList.length; i++) {
+      if (scoreList[i] < this.score) {
+        this.newHighscore = true;
+        scoreList[i] = this.score;
+        nameList[i] = this.name;
         break;
       }
     }
-    // update local storage
-    for (let i = 1; i <= 5; i++) {
-      localStorage.setItem(`name${i}`,storageScores[i-1]);
-      localStorage.setItem(`highscore${i}`,storageScores[i-1]);
+
+    // push new data to local storage
+    for (let i = 0; i < 5; i++) {
+      localStorage.setItem(`score${i}`, scoreList[i].toString());
+      localStorage.setItem(`name${i}`, nameList[i]);
     }
-    // return updated highscores as array
-    return storageScores;
+
+    // return data for display
+    let returnScoreData = [];
+    for (let i = 0; i < 5; i++) {
+      returnScoreData[i] = [nameList[i], scoreList[i]];
+    }
+    return returnScoreData;
   }
 
   // DISPLAY STATS & HIGHSCORES
@@ -345,13 +361,14 @@ class Game {
   }
 
   displayHighscores() {
-    let currentScores = this.updateHighscore();
+    let highscoreList = this.updateHighscore();
     return `
-    <li>Player: ${currentScores[0].name}, Score: ${currentScores[0].score}</li>
-    <li>Player: ${currentScores[1].name}, Score: ${currentScores[1].score}</li>
-    <li>Player: ${currentScores[2].name}, Score: ${currentScores[2].score}</li>
-    <li>Player: ${currentScores[3].name}, Score: ${currentScores[3].score}</li>
-    <li>Player: ${currentScores[4].name}, Score: ${currentScores[4].score}</li>`;
+    <li>Name: ${highscoreList[0][0]}, Score: ${highscoreList[0][1]}</li>
+    <li>Name: ${highscoreList[1][0]}, Score: ${highscoreList[1][1]}</li>
+    <li>Name: ${highscoreList[2][0]}, Score: ${highscoreList[2][1]}</li>
+    <li>Name: ${highscoreList[3][0]}, Score: ${highscoreList[3][1]}</li>
+    <li>Name: ${highscoreList[4][0]}, Score: ${highscoreList[4][1]}</li>
+ `;
   }
 
   // switch to end screen
