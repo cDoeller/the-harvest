@@ -128,9 +128,6 @@ class Game {
       }
       // ** TARGET HIT (balloon)
       if (target.balloonIsHit === true) {
-        // sound
-        const balloonSound = new Audio("./sound/balloon.mp3"); // balloon
-        balloonSound.play();
         // score points
         this.score += target.score;
         // increase targets hit
@@ -142,9 +139,6 @@ class Game {
       }
       // ** TARGET HIT (broccoli)
       if (target.broccoliIsHit === true) {
-        // sound
-        const broccoliSound = new Audio("./sound/broccoli.mp3"); // broccoli
-        broccoliSound.play();
         // penalty points
         this.score -= target.score;
         // increase broccoli hit
@@ -161,9 +155,6 @@ class Game {
         // change to growing image on spawn line
         if (!target.growing) {
           target.growInGround();
-          // sound
-          const growingSound = new Audio("./sound/growing.mp3"); // growing
-          growingSound.play();
         }
       } else {
         // if still moving -> rise up or fall down
@@ -188,7 +179,6 @@ class Game {
     } else if (this.score < 10 && this.score >= 0) {
       scoreString = `000${Math.abs(this.score)}`;
       scoreH1.style.color = "blue";
-
     } else if (this.score < 0 && this.score > -10) {
       scoreString = `000${Math.abs(this.score)}`;
       scoreH1.style.color = "red";
@@ -213,27 +203,6 @@ class Game {
       timeString = `0:00`;
     }
     timeH1.innerHTML = `${timeString}`;
-  }
-
-  // DISPLAY STATS
-  // ******* PROBLEMS
-  displayStats() {
-    const missed = this.clickCount - this.balloonsHit - this.broccolisHit;
-    return `
-    <li>Darts Thrown: ${this.clickCount}</li>
-    <li>Balloons Hit: ${this.balloonsHit}</li>
-    <li>Broccolis Hit: ${this.broccolisHit}</li>
-    <li>Missed Darts: ${missed}</li>
-    <li>Total Score: ${this.score}</li>`;
-  }
-
-  displayHighscores() {
-    return `
-    <li>Player Name ${this.score}, Score ${this.score}</li>
-    <li>Player Name ${this.score}, Score ${this.score}</li>
-    <li>Player Name ${this.score}, Score ${this.score}</li>
-    <li>Player Name ${this.score}, Score ${this.score}</li>
-    <li>Player Name ${this.score}, Score ${this.score}</li>`;
   }
 
   spawnTargtes(amount) {
@@ -332,6 +301,57 @@ class Game {
     this.dartsLeft = 8;
     this.mustReload = false;
     this.updateDartVisuals(true);
+  }
+
+  //update highscore                                                              ****
+  updateHighscore() {
+    let storageScores = [];
+    // get stored highscores from local storage
+    for (let i = 1; i <= 5; i++) {
+      let tempObj = {};
+      tempObj.name = localStorage.getItem(`name${i}`);
+      tempObj.score = localStorage.getItem(`highscore${i}`);
+      if (tempObj.name == null) tempObj.name = "n/a";
+      if (tempObj.score == null) tempObj.score = 0;
+      storageScores.push(tempObj);
+    }
+    console.log(storageScores);
+    // compare stored highscores with current score
+    for (let i = 0; i < storageScores.length; i++) {
+      if (storageScores[i].score < this.score) {
+        storageScores[i].score = this.score;
+        storageScores[i].name = "testName";
+        break;
+      }
+    }
+    // update local storage
+    for (let i = 1; i <= 5; i++) {
+      localStorage.setItem(`name${i}`,storageScores[i-1]);
+      localStorage.setItem(`highscore${i}`,storageScores[i-1]);
+    }
+    // return updated highscores as array
+    return storageScores;
+  }
+
+  // DISPLAY STATS & HIGHSCORES
+  displayStats() {
+    const missed = this.clickCount - this.balloonsHit - this.broccolisHit;
+    return `
+    <li>Darts Thrown: ${this.clickCount}</li>
+    <li>Balloons Hit: ${this.balloonsHit}</li>
+    <li>Broccolis Hit: ${this.broccolisHit}</li>
+    <li>Missed Darts: ${missed}</li>
+    <li>Total Score: ${this.score}</li>`;
+  }
+
+  displayHighscores() {
+    let currentScores = this.updateHighscore();
+    return `
+    <li>Player: ${currentScores[0].name}, Score: ${currentScores[0].score}</li>
+    <li>Player: ${currentScores[1].name}, Score: ${currentScores[1].score}</li>
+    <li>Player: ${currentScores[2].name}, Score: ${currentScores[2].score}</li>
+    <li>Player: ${currentScores[3].name}, Score: ${currentScores[3].score}</li>
+    <li>Player: ${currentScores[4].name}, Score: ${currentScores[4].score}</li>`;
   }
 
   // switch to end screen
