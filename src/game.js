@@ -214,10 +214,10 @@ class Game {
       const randScaleFactorIndex = Math.floor(Math.random() * 3);
       const currentScaleFactor = this.scaleFacotrs[randScaleFactorIndex];
       // assign the score
-      const currentScore = 0;
-      if (currentScaleFactor == 5) currentScore = 50;
-      if (currentScaleFactor == 15) currentScore = 25;
-      if (currentScaleFactor == 25) currentScore = 10;
+      let currentScore = 0;
+      if (currentScaleFactor===5)currentScore=50;
+      if (currentScaleFactor===15)currentScore=25;
+      if (currentScaleFactor===25)currentScore=10;
       // get a random spawn position only in window width, at certain Y height above ground
       const randSpawnPosX =
         Math.random() * (window.innerWidth - currentScaleFactor * 4);
