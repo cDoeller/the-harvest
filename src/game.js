@@ -1,5 +1,5 @@
 class Game {
-  constructor(maxTime) {
+  constructor(maxTime, name) {
     this.startScreen = document.getElementById("start-window");
     this.gameScreen = document.getElementById("game-window");
     this.endScreen = document.getElementById("end-window");
@@ -19,7 +19,7 @@ class Game {
 
     // scores for different sizes + penalty
     this.score = 0;
-    this.name = "testName";
+    this.name = name;
     this.balloonsHit = 0;
     this.broccolisHit = 0;
     this.clickCount = 0;
@@ -307,7 +307,6 @@ class Game {
 
   // update highscore
   // *** fix highscore list order 
-  // *** name as user input
   updateHighscore() {
 
     let scoreList = [];

@@ -13,8 +13,28 @@
         <!-- initially shown: start window -->
         <div id="start-window" class="start-background">
             <div id="start-window-container" class="start-end-container">
-                <h1 class="start-game-title"> The Harvest</h1>
-                <p id="start-text" class="normal-text">We finally found a way to brocco-bloom the desert! <br> ..if there was not an evil force that sends our precious broccolis upwards via helium balloons. <br> We need your help! <br> You can become a hero, brocco-bloom the desert and collect points for your ego. <br> Left-click to throw a dart and make the balloons explode! <br> But be aware: do not hit the ascending broccolis or they will rot and you will receive the penalty you deserve. You have 20 seconds, we count on you!!</p>
+                <h1 class="start-game-title"> The Harvest </h1>
+                <div class="start-content">
+                    <div id="start-text-container">
+                        <p class="normal-text">
+                            Hurray, we finally found a way to grow broccoli in the desert! 
+                            Our engineers have tied the broccoli to balloons, but unfortunately the landing mechanism fails. 
+                            You can earn points by bursting the balloons with darts. Smaller balloons give more points than larger ones.
+                            But be careful! If you hit a broccoli, it will rot. 
+                            If it disappears from your sight, it is lost forever. 
+                            Both will result in a penalty! <br> <br>
+                        </p>
+                    </div>
+                    <div id="name-and-keys">
+                        <div id="input-name-container">
+                            <input type="text" id="name-input" name="name" minlength="1" maxlength="10" placeholder="your name">
+                        </div>
+                        <div id="explain-buttons-container">
+                            <button id="click-button" class="explain-button">'click' to throw dart</button>
+                            <button id="reload-button" class="explain-button">press 'a' to reload</button>
+                        </div>
+                    </div>
+                </div>
                 <button id="start-button" class="button">start game</button>
             </div>
         </div>

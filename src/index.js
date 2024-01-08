@@ -5,13 +5,17 @@ window.onload = function () {
 
   // to check if restart button has been clicked
   let isRestarting = false;
-  
+  let name = "";
+
   // add listener to start button
   // call function to start the game
   //startGame(); // only for testing
 
   startButton.addEventListener("click", function () {
-    startGame(); // (isRestarting)
+    let inputElement = document.getElementById("name-input");
+    // get name from input
+    name = inputElement.value;
+    startGame(); 
   });
   restartButton.addEventListener("click", function () {
     const endScreen = document.getElementById("end-window");
@@ -22,7 +26,7 @@ window.onload = function () {
 
   function startGame() {
     // creating a new instance of the game class
-    game = new Game(1); // -----> maxTime in brackets
+    game = new Game(1, name); // -----> maxTime in brackets
     // call the start game method
     game.start(isRestarting);
   }
