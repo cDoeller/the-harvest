@@ -30,6 +30,24 @@ body {
   cursor: url(../img/crosshair.png) 15 15, auto;
 }
 
+/* TEXT */
+
+h1 {
+  font-family: "Dangrek";
+}
+
+p,
+li {
+  font-family: "Manrope";
+}
+
+button {
+  font-family: "Dangrek";
+  font-size: 2.4em;
+  color: white;
+  text-transform: uppercase;
+}
+
 /* CONTAINERS */
 
 #start-window {
@@ -56,7 +74,7 @@ body {
 
 .start-end-container {
   width: 60%;
-  min-height: 50vh;
+  /* min-height: 50vh; */
   padding: 40px 40px 60px 40px;
   border-radius: 40px;
   background-color: rgba(0, 0, 0, 0.6);
@@ -92,6 +110,8 @@ body {
   background-color: blue;
 }
 
+/* START SCREEN */
+
 .start-background {
   height: 100vh;
   width: 100vw;
@@ -104,6 +124,21 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.start-game-title {
+  font-size: 3em;
+  text-transform: uppercase;
+  color: white;
+}
+
+.normal-text {
+  margin-top: 30px;
+  width: 100%;
+  font-size: 1.6em;
+  text-align: left;
+  color: white;
+  hyphens: auto;
 }
 
 .start-content {
@@ -177,6 +212,9 @@ input {
   /* padding: 5px; */
 }
 
+#start-button {
+}
+
 /* GAME SCREEN */
 
 #time-up {
@@ -197,59 +235,35 @@ input {
 
 #score-container {
   width: 100%;
-  height: 100%;
+  height: auto;
   display: flex;
   margin-top: 30px;
+  justify-content: center;
+  gap:20%;
 }
 
-/* TEXT */
-
-h1 {
-  font-family: "Dangrek";
-}
-
-p,
-li {
-  font-family: "Manrope";
-}
-
-.start-game-title {
-  font-size: 3em;
-  text-transform: uppercase;
-  color: white;
-}
-
-.normal-text {
-  margin-top: 30px;
-  width: 100%;
-  font-size: 1.6em;
-  text-align: left;
-  color: white;
-  hyphens: auto;
-}
-
-button {
-  font-family: "Dangrek";
-  font-size: 2.4em;
-  color: white;
-  text-transform: uppercase;
+.score-subcontainer{
+  width:auto;
+  display: flex;
+  justify-content: center;
+  gap: 50px;
 }
 
 .stats-scores {
-  width: 50%;
+  width: auto;
   color: white;
-  text-align: center;
+  text-align: left;
 }
 
 .stats-scores li {
   font-size: 1.8em;
 }
 
-#stats {
+#stats-titles, #stats-numbers, #highscores-numbers {
   list-style: none;
 }
 
-#highscores {
+#highscores-names {
   list-style: decimal;
   list-style-position: inside;
 }
@@ -315,6 +329,7 @@ button {
 
 /* DARTS */
 /* 450 x 600 format */
+
 #dart-container {
   height: calc(var(--dartScale) * 6em);
   position: absolute;
@@ -383,4 +398,88 @@ button {
   background-size: cover;
   background-repeat: no-repeat;
   position: relative;
+}
+
+
+/* TABLET */
+@media only screen and (max-width: 1000px) {
+
+  /* Show Scores as column */
+  #score-container {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    gap: 50px;
+  }
+
+  .score-subcontainer{
+    width:100%;
+  }
+
+  /* show darts underneath each other */
+  #dart1 {
+    left: 0;
+    top: 0;
+  }
+  #dart2 {
+    left: 0;
+    top: 30px;
+  }
+  #dart3 {
+    left: 0;
+    top: 60px;
+  }
+  #dart4 {
+    left: 0;
+    top: 90px;
+  }
+  #dart5 {
+    left: 0;
+    top: 120px;
+  }
+  #dart6 {
+    left: 0;
+    top: 150px;
+  }
+  #dart7 {
+    left: 0;
+    top: 180px;
+  }
+  #dart8 {
+    left: 0;
+    top: 210px;
+  }
+}
+
+
+/* MOBILE */
+@media only screen and (max-width: 600px) {
+
+  #dart1,  #dart2,  #dart3,  #dart4,  #dart5,  #dart6,  #dart7,  #dart8 {
+    display:none;
+  }
+
+  #score {
+    font-size: 2.5em;
+    position:inherit;
+    right: 0;
+    top: 0;
+    text-align: center;
+  }
+  
+  #time {
+    font-size: 2.5em;
+    color: red;
+    left: 20px;
+    bottom: 20px;
+  }
+
+ .score-subcontainer{
+  gap:15px;
+ }
+
 }

@@ -22,7 +22,7 @@
                             You can earn points by bursting the balloons with darts. Smaller balloons give more points than larger ones.
                             But be careful! If you hit a broccoli, it will rot. 
                             If it disappears from your sight, it is lost forever. 
-                            Both will result in a penalty! <br> <br>
+                            Both will result in a penalty!
                         </p>
                     </div>
                     <div id="name-and-keys">
@@ -40,10 +40,22 @@
         </div>
         <div id="end-window" class="end-background">
             <div id="end-window-container" class="start-end-container">
-                <h1 class="start-game-title">the time is up!</h1>
+                <h1 class="start-game-title">time is up!</h1>
                 <div id="score-container">
-                    <ul id="stats" class="stats-scores"></ul>
-                    <ol id="highscores" class="stats-scores"></ol>
+                    <div id="stats" class="score-subcontainer">
+                        <ul id="stats-titles" class="stats-scores">
+                            <li>Darts Thrown:</li>
+                            <li>Balloons Hit:</li>
+                            <li>Broccolis Hit:</li>
+                            <li>Missed Darts:</li>
+                            <li>Total Score:</li>
+                        </ul>
+                        <ul id="stats-numbers" class="stats-scores"></ul>
+                    </div>
+                    <div id="highscroes" class="score-subcontainer">
+                        <ol id="highscores-names" class="stats-scores"></ol>
+                        <ul id="highscores-numbers" class="stats-scores"></ul>
+                    </div>
                 </div>
                 <button id="restart-button" class="button">play again</button>
             </div>   

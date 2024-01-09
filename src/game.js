@@ -112,6 +112,7 @@ class Game {
   }
 
   updateGame() {
+
     // loop through all targets
     this.targets.forEach((target, index) => {
       // if game is not running anymore
@@ -127,6 +128,7 @@ class Game {
         // --> escape to not do the other steps
         return;
       }
+
       // ** TARGET HIT (balloon)
       if (target.balloonIsHit === true) {
         // score points
@@ -138,6 +140,7 @@ class Game {
         // make new target
         this.spawnTargtes(1);
       }
+
       // ** TARGET HIT (broccoli)
       if (target.broccoliIsHit === true) {
         // penalty points
@@ -147,6 +150,7 @@ class Game {
         // reset the hit flag of broccoli
         target.broccoliIsHit = false;
       }
+
       // MOVE or GROW
       // if target falling down and below spawn line
       if (
@@ -164,6 +168,7 @@ class Game {
       // display
       target.displayTarget();
     });
+
     // display score after updates
     this.displayScore();
   }
@@ -347,34 +352,72 @@ class Game {
   }
 
   displayStats() {
+    const statsInput = document.getElementById("stats-numbers");
+
     const missed = this.clickCount - this.balloonsHit - this.broccolisHit;
-    return `
-    <li>Darts Thrown: ${this.clickCount}</li>
-    <li>Balloons Hit: ${this.balloonsHit}</li>
-    <li>Broccolis Hit: ${this.broccolisHit}</li>
-    <li>Missed Darts: ${missed}</li>
-    <li>Total Score: ${this.score}</li>`;
+    
+    const stats = `
+    <li>${this.clickCount}</li>
+    <li>${this.balloonsHit}</li>
+    <li>${this.broccolisHit}</li>
+    <li>${missed}</li>
+    <li>${this.score}</li>`;
+
+    statsInput.innerHTML = stats;
   }
 
   displayHighscores() {
+
     let highscoreList = this.updateHighscore();
-    return `
-    <li>Name: ${highscoreList[0][0]}, Score: ${highscoreList[0][1]}</li>
-    <li>Name: ${highscoreList[1][0]}, Score: ${highscoreList[1][1]}</li>
-    <li>Name: ${highscoreList[2][0]}, Score: ${highscoreList[2][1]}</li>
-    <li>Name: ${highscoreList[3][0]}, Score: ${highscoreList[3][1]}</li>
-    <li>Name: ${highscoreList[4][0]}, Score: ${highscoreList[4][1]}</li>
- `;
+
+    let highscoreNamesList = [];
+    for (let i = 0; i < highscoreList.length; i++){
+      highscoreNamesList.push(highscoreList[i][0]);
+    }
+
+    let highscoreNumbersList = [];
+    for (let i = 0; i < highscoreList.length; i++){
+      highscoreNumbersList.push(highscoreList[i][1]);
+    }
+
+    this.displayHighscoreNames(highscoreNamesList);
+    this.displayHighscoreNumbers(highscoreNumbersList);
+  }
+
+  displayHighscoreNames(namesList){
+    
+    const highScoreInput = document.getElementById("highscores-names");
+    
+    const highScoreNames = `
+    <li>${namesList[0]}</li>
+    <li>${namesList[1]}</li>
+    <li>${namesList[2]}</li>
+    <li>${namesList[3]}</li>
+    <li>${namesList[4]}</li>`;
+    
+    highScoreInput.innerHTML = highScoreNames;
+  }
+
+  displayHighscoreNumbers(numbersList){
+    
+    const highScoreInput = document.getElementById("highscores-numbers");
+    
+    const highScoreNumbers = `
+    <li>${numbersList[0]}</li>
+    <li>${numbersList[1]}</li>
+    <li>${numbersList[2]}</li>
+    <li>${numbersList[3]}</li>
+    <li>${numbersList[4]}</li>`;
+    
+    highScoreInput.innerHTML = highScoreNumbers;
   }
 
   endGame() {
+
     const endScreen = document.getElementById("end-window");
     endScreen.style.display = "flex";
-    const highScoreText = document.getElementById("highscores");
-    const endScreenText = document.getElementById("stats");
-    const stats = this.displayStats();
-    const highScores = this.displayHighscores();
-    endScreenText.innerHTML = stats;
-    highScoreText.innerHTML = highScores;
+
+    this.displayStats();
+    this.displayHighscores();    
   }
 }
