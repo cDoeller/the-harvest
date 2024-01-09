@@ -14,7 +14,7 @@ window.onload = function () {
   startButton.addEventListener("click", function () {
     let inputElement = document.getElementById("name-input");
     // get name from input
-    name = inputElement.value;
+    name = inputElement.value.toUpperCase();
     startGame(); 
   });
   restartButton.addEventListener("click", function () {

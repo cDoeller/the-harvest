@@ -111,7 +111,6 @@ class Game {
     window.requestAnimationFrame(() => this.gameLoop());
   }
 
-  // ** UPDATE FUNCTION
   updateGame() {
     // loop through all targets
     this.targets.forEach((target, index) => {
@@ -245,7 +244,6 @@ class Game {
     }
   }
 
-  // CHECK AVAILABLE DART AMOUNT
   checkDarts() {
     // dont do this if game is over
     if (this.gameIsOver) return;
@@ -258,7 +256,6 @@ class Game {
     if (this.dartsLeft <= 0) this.mustReload = true;
   }
 
-  // RELOAD method
   reload() {
     // sound
     const reloadSound = new Audio("./sound/reload.mp3"); // reload
@@ -271,7 +268,6 @@ class Game {
     console.log(this.sound);
   }
 
-  // DART VISUALS UPDATE
   updateDartVisuals(shouldReload) {
     if (this.gameIsOver) return; // prevent from running when over
     const dartElements = document.getElementsByClassName("dart");
@@ -289,7 +285,6 @@ class Game {
     }
   }
 
-  // ** RESTART method
   restart() {
     // get rid of old objects for restart game
     const targetsClasses = document.getElementsByClassName("target-container");
@@ -351,7 +346,6 @@ class Game {
     return returnScoreData;
   }
 
-  // DISPLAY STATS & HIGHSCORES
   displayStats() {
     const missed = this.clickCount - this.balloonsHit - this.broccolisHit;
     return `
@@ -373,7 +367,6 @@ class Game {
  `;
   }
 
-  // switch to end screen
   endGame() {
     const endScreen = document.getElementById("end-window");
     endScreen.style.display = "flex";
