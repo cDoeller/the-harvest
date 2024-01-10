@@ -1,4 +1,4 @@
-class Target {
+class BonusTarget extends Target {
   constructor(
     spawnPositionX,
     spawnPositionY,
@@ -7,39 +7,21 @@ class Target {
     speed,
     targetNumber
   ) {
-    // assign variables to object
-    this.spawnPositionX = spawnPositionX;
-    this.spawnPositionY = spawnPositionY;
-    this.scaleFactor = scaleFactor;
-    this.score = score;
-    this.speed = speed;
-    this.targetNumber = targetNumber;
 
-    // initial position when spawning
-    this.positionX = spawnPositionX;
-    this.positionY = spawnPositionY;
+    super(    
+    spawnPositionX,
+    spawnPositionY,
+    scaleFactor,
+    score,
+    speed,
+    targetNumber);
 
-    // save the entire ID
-    this.targetID = "";
-    this.broccoliID = "";
-    this.balloonID = "";
-
-    // speed for falling down
-    this.fallingSpeed = 10;
-
-    this.balloonIsHit = false;
-    this.broccoliIsHit = false;
-    this.broccoliWasHit = false;
-    this.targetRising = true;
-    this.growing = false;
-
-    // get game screen for appending targets
-    this.gameScreen = document.getElementById("game-screen");
-
-    // activate or deactivate target reactions to clicks depending on reload
-    this.mustReload = false;
+    // count how often it has been hit
+    this.hitCount = 0;
+    this.necessaryHits = 3;
   }
 
+  // CHANGED
   makeTarget() {
     // make a target container element
     const targetContainer = document.createElement("div");
@@ -61,8 +43,8 @@ class Target {
 
     // make a balloon element
     const balloon = document.createElement("div");
-    balloon.className = "balloon-class";
-    this.balloonID = `balloon-${this.targetNumber}`;
+    balloon.className = "bonus-balloon-class";
+    this.balloonID = `bonus-balloon-${this.targetNumber}`;
     balloon.id = this.balloonID;
     // style balloon element
     balloon.style.position = "absolute";
@@ -75,8 +57,8 @@ class Target {
 
     // make a broccoli element
     const broccoli = document.createElement("div");
-    broccoli.className = "broccoli-class";
-    this.broccoliID = `broccoli-${this.targetNumber}`;
+    broccoli.className = "bonus-broccoli-class";
+    this.broccoliID = `bonus-broccoli-${this.targetNumber}`;
     broccoli.id = this.broccoliID;
     // style broccoli
     broccoli.style.position = "absolute";
@@ -95,36 +77,22 @@ class Target {
     targetContainer.appendChild(broccoli);
   }
 
-  moveTarget() {
-    if (this.targetRising) {
-      this.positionY += this.speed;
-    } else {
-      this.positionY -= this.fallingSpeed;
-    }
-  }
-
-  displayTarget() {
-    const target = document.getElementById(`target-${this.targetNumber}`);
-    target.style.display = "block";
-    target.style.bottom = `${this.positionY}px`;
-  }
-
-  isGone() {
-    if (this.positionY > window.innerHeight) {
-      return true;
-    } else {
-      //console.log (window. innerHeight);
-      return false;
-    }
-  }
-
+  // CHANGED
   ballooniHit() {
     // do not react if we have to reload
     if (this.mustReload) return;
+    // count how often it has been hit
+    if (this.hitCount < this.necessaryHits) {
+      this.hitCount++;
+      const metalBalloonSound = new Audio("./sound/metal-balloon.mp3"); // balloon
+      metalBalloonSound.play();
+      console.log("metal balloon hit");
+      return;
+    }
     // sound
-    const balloonSound = new Audio("./sound/balloon.mp3"); // balloon
+    const balloonSound = new Audio("./sound/metal-balloon-explode.mp3"); // balloon
     balloonSound.play();
-    console.log("balloon hit");
+    console.log("metal balloon destroyed");
     // change state
     this.balloonIsHit = true;
     this.targetRising = false;
@@ -140,9 +108,9 @@ class Target {
     balloon.classList.add("belloon-explode");
     // broccoli stays rotten, generally changing to falling
     if (!this.broccoliWasHit) {
-      broccoli.classList.add("broccoli-falling");
+      broccoli.classList.add("bonus-broccoli-falling");
     } else {
-      broccoli.classList.add("broccoli-rotten-falling");
+      broccoli.classList.add("bonus-broccoli-rotten-falling");
     }
     setTimeout(() => {
       balloon.remove();
@@ -151,6 +119,7 @@ class Target {
     }, 50);
   }
 
+  // CHANGED
   broccoliHit() {
     // do not react if we have to reload
     if (this.mustReload) return;
@@ -162,9 +131,10 @@ class Target {
     this.broccoliWasHit = true;
     // add dart sprite
     const broccoli = document.getElementById(`${this.broccoliID}`);
-    broccoli.classList.add("broccoli-hit");
+    broccoli.classList.add("bonus-broccoli-hit");
   }
 
+  // CHANGE
   growInGround() {
     const broccoli = document.getElementById(`${this.broccoliID}`);
     // sound
@@ -172,10 +142,11 @@ class Target {
     growingSound.play();
     // change growing image (if prev hit, grow rotten)
     if (!this.broccoliWasHit) {
-      broccoli.classList.add("broccoli-growing");
+      broccoli.classList.add("bonus-broccoli-growing");
     } else {
-      broccoli.classList.add("broccoli-growing-hit");
+      broccoli.classList.add("bonus-broccoli-growing-hit");
     }
     this.growing = true;
   }
+
 }

@@ -212,9 +212,6 @@ input {
   /* padding: 5px; */
 }
 
-#start-button {
-}
-
 /* GAME SCREEN */
 
 #time-up {
@@ -325,6 +322,44 @@ input {
 
 .broccoli-growing-hit {
   background-image: url("../img/BROCCOLI-rope-rotten-growing.png");
+}
+
+/* bonus sprites */
+
+.bonus-balloon-class {
+  background-image: url("../img/metal-balloon.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: relative;
+}
+
+.bonus-broccoli-class {
+  background-image: url("../img/BROCCOLI-rope-strong.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: relative;
+}
+
+.bonus-broccoli-hit {
+  background-image: url("../img/BROCCOLI-rope-rotten-strong.png");
+}
+
+.bonus-broccoli-falling {
+  background-image: url("../img/BROCCOLI-falling-strong.png");
+}
+
+.bonus-broccoli-rotten-falling {
+  background-image: url("../img/BROCCOLI-rope-rotten-falling-strong.png");
+}
+
+.bonus-broccoli-growing {
+  background-image: url("../img/BROCCOLI-ground-strong.png");
+}
+
+.bonus-broccoli-growing-hit {
+  background-image: url("../img/BROCCOLI-rope-rotten-growing-strong.png");
 }
 
 /* DARTS */

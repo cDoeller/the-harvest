@@ -13,6 +13,11 @@ class Game {
     this.minSpeed = 0.5;
     this.spawnTargetBottom = 100; // spawning always at same y height
 
+    this.bonusScore = 100;
+    this.bonusSpeed = 1.8;
+    this.bonusTargetTimeout = 0;
+    this.bonusIsActive = false;
+
     // general game mechanics
     this.countdown = maxTime;
     this.gameIsOver = false;
@@ -90,13 +95,31 @@ class Game {
   }
 
   gameLoop() {
+    // spawn bonus target
+    if (!this.bonusIsActive) {
+      // switch activity of bonus
+      this.bonusIsActive = true;
+      // set random timeout for spawning bonus target
+      const randomBonusSpawn = Math.random() * this.countdown * 1000;
+      this.bonusTargetTimeout = setTimeout(() => {
+        // spawn bonus
+        this.spawnBonusTarget();
+        // play bonus sound
+        const bonusSound = new Audio("./sound/bonus-appearance.mp3");
+        bonusSound.play();
+      }, randomBonusSpawn);
+    }
+
     // GAME IS OVER --> stop when countdown === 0
     if (this.countdown <= 0) {
-      console.log("time is up");
-      //console.log(this.targets);
+      // set game over
       this.gameIsOver = true;
+
+      // clear intervals and timeouts
       clearInterval(this.mainIntervalID);
+      clearTimeout(this.bonusTargetTimeout);
     }
+
     // Interrupt the function to stop the loop if "gameIsOver" is set to "true"
     if (this.gameIsOver) {
       this.displayStats();
@@ -112,13 +135,18 @@ class Game {
   }
 
   updateGame() {
-
     // loop through all targets
     this.targets.forEach((target, index) => {
       // if game is not running anymore
       target.mustReload = this.mustReload;
       // ** TARGET GONE
       if (target.isGone() === true) {
+        // check if this was a ** bonus target
+        // by checking if individual property present
+        if (Object.hasOwn(target, "necessaryHits")) {
+          // switch activity of bonus
+          this.bonusIsActive = false;
+        }
         // penalty points
         this.score -= target.score;
         // delete from array
@@ -131,6 +159,12 @@ class Game {
 
       // ** TARGET HIT (balloon)
       if (target.balloonIsHit === true) {
+        // check if this was a ** bonus target
+        // by checking if individual property present
+        if (Object.hasOwn(target, "necessaryHits")) {
+          // switch activity of bonus
+          this.bonusIsActive = false;
+        }
         // score points
         this.score += target.score;
         // increase targets hit
@@ -219,9 +253,9 @@ class Game {
       const currentScaleFactor = this.scaleFacotrs[randScaleFactorIndex];
       // assign the score
       let currentScore = 0;
-      if (currentScaleFactor===5)currentScore=50;
-      if (currentScaleFactor===15)currentScore=25;
-      if (currentScaleFactor===25)currentScore=10;
+      if (currentScaleFactor === 5) currentScore = 50;
+      if (currentScaleFactor === 15) currentScore = 25;
+      if (currentScaleFactor === 25) currentScore = 10;
       // get a random spawn position only in window width, at certain Y height above ground
       const randSpawnPosX =
         Math.random() * (window.innerWidth - currentScaleFactor * 4);
@@ -247,6 +281,33 @@ class Game {
       // increase target number
       this.targetID++; // ****
     }
+  }
+
+  spawnBonusTarget() {
+    // make bonus always big
+    const currentScaleFactor = this.scaleFacotrs[2];
+    // assign the score
+    let currentScore = this.bonusScore;
+    // get a random spawn position only in window width, at certain Y height above ground
+    const randSpawnPosX =
+      Math.random() * (window.innerWidth - currentScaleFactor * 4);
+
+    // make the targets and put in array
+    // spawnPositionX, spawnPositionY, scaleFactor[0.5, 1, 1.5], score, speed, targetNumber
+    const tempBonusTarget = new BonusTarget(
+      randSpawnPosX,
+      this.spawnTargetBottom,
+      currentScaleFactor,
+      currentScore,
+      this.bonusSpeed,
+      this.targetID
+    );
+    // call maketarget method
+    tempBonusTarget.makeTarget();
+    // add tot targets array
+    this.targets.push(tempBonusTarget);
+    // increase target number
+    this.targetID++; // ****
   }
 
   checkDarts() {
@@ -299,6 +360,7 @@ class Game {
     });
     this.targets = [];
     this.targetID = 0;
+    this.bonusTargetID = 0;
     this.score = 0;
     this.balloonsHit = 0;
     this.broccolisHit = 0;
@@ -308,10 +370,7 @@ class Game {
     this.updateDartVisuals(true);
   }
 
-  // update highscore
-  // *** fix highscore list order 
   updateHighscore() {
-
     let scoreList = [];
     let nameList = [];
 
@@ -355,7 +414,7 @@ class Game {
     const statsInput = document.getElementById("stats-numbers");
 
     const missed = this.clickCount - this.balloonsHit - this.broccolisHit;
-    
+
     const stats = `
     <li>${this.clickCount}</li>
     <li>${this.balloonsHit}</li>
@@ -367,16 +426,15 @@ class Game {
   }
 
   displayHighscores() {
-
     let highscoreList = this.updateHighscore();
 
     let highscoreNamesList = [];
-    for (let i = 0; i < highscoreList.length; i++){
+    for (let i = 0; i < highscoreList.length; i++) {
       highscoreNamesList.push(highscoreList[i][0]);
     }
 
     let highscoreNumbersList = [];
-    for (let i = 0; i < highscoreList.length; i++){
+    for (let i = 0; i < highscoreList.length; i++) {
       highscoreNumbersList.push(highscoreList[i][1]);
     }
 
@@ -384,40 +442,37 @@ class Game {
     this.displayHighscoreNumbers(highscoreNumbersList);
   }
 
-  displayHighscoreNames(namesList){
-    
+  displayHighscoreNames(namesList) {
     const highScoreInput = document.getElementById("highscores-names");
-    
+
     const highScoreNames = `
     <li>${namesList[0]}</li>
     <li>${namesList[1]}</li>
     <li>${namesList[2]}</li>
     <li>${namesList[3]}</li>
     <li>${namesList[4]}</li>`;
-    
+
     highScoreInput.innerHTML = highScoreNames;
   }
 
-  displayHighscoreNumbers(numbersList){
-    
+  displayHighscoreNumbers(numbersList) {
     const highScoreInput = document.getElementById("highscores-numbers");
-    
+
     const highScoreNumbers = `
     <li>${numbersList[0]}</li>
     <li>${numbersList[1]}</li>
     <li>${numbersList[2]}</li>
     <li>${numbersList[3]}</li>
     <li>${numbersList[4]}</li>`;
-    
+
     highScoreInput.innerHTML = highScoreNumbers;
   }
 
   endGame() {
-
     const endScreen = document.getElementById("end-window");
     endScreen.style.display = "flex";
 
     this.displayStats();
-    this.displayHighscores();    
+    this.displayHighscores();
   }
 }
