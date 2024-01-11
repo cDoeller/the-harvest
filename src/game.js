@@ -14,7 +14,7 @@ class Game {
     this.spawnTargetBottom = 100; // spawning always at same y height
 
     this.bonusScore = 100;
-    this.bonusSpeed = 1.8;
+    this.bonusSpeed = 2.2;
     this.bonusTargetTimeout = 0;
     this.bonusIsActive = false;
 
@@ -29,6 +29,7 @@ class Game {
     this.broccolisHit = 0;
     this.clickCount = 0;
     this.newHighscore = false;
+    this.newHighscoreIndex = null;
 
     // darts
     this.maxDarts = 8;
@@ -387,11 +388,15 @@ class Game {
     }
 
     // compare with current score
+    // insert new top 5 highscore in list
     for (let i = 0; i < scoreList.length; i++) {
       if (scoreList[i] < this.score) {
         this.newHighscore = true;
-        scoreList[i] = this.score;
-        nameList[i] = this.name;
+        this.newHighscoreIndex = i;
+        scoreList.splice(i,0,this.score);
+        scoreList.pop();
+        nameList.splice(i,0,this.name);
+        nameList.pop();
         break;
       }
     }
@@ -440,17 +445,28 @@ class Game {
 
     this.displayHighscoreNames(highscoreNamesList);
     this.displayHighscoreNumbers(highscoreNumbersList);
+
+    // if new highscore, make red in list
+    if (this.newHighscore === true){
+      const hsLiNameElement = document.getElementById(`hs-name-${this.newHighscoreIndex}`);
+      hsLiNameElement.style.textShadow = "0px 0px 30px white";
+      const hsLiScoreElement = document.getElementById(`hs-score-${this.newHighscoreIndex}`);
+      hsLiScoreElement.style.textShadow = "0px 0px 30px white";
+      this.newHighscore = false;
+      this.newHighscoreIndex = null;
+    }
+
   }
 
   displayHighscoreNames(namesList) {
     const highScoreInput = document.getElementById("highscores-names");
 
     const highScoreNames = `
-    <li>${namesList[0]}</li>
-    <li>${namesList[1]}</li>
-    <li>${namesList[2]}</li>
-    <li>${namesList[3]}</li>
-    <li>${namesList[4]}</li>`;
+    <li id="hs-name-0">${namesList[0]}</li>
+    <li id="hs-name-1">${namesList[1]}</li>
+    <li id="hs-name-2">${namesList[2]}</li>
+    <li id="hs-name-3">${namesList[3]}</li>
+    <li id="hs-name-4">${namesList[4]}</li>`;
 
     highScoreInput.innerHTML = highScoreNames;
   }
@@ -459,11 +475,11 @@ class Game {
     const highScoreInput = document.getElementById("highscores-numbers");
 
     const highScoreNumbers = `
-    <li>${numbersList[0]}</li>
-    <li>${numbersList[1]}</li>
-    <li>${numbersList[2]}</li>
-    <li>${numbersList[3]}</li>
-    <li>${numbersList[4]}</li>`;
+    <li id="hs-score-0">${numbersList[0]}</li>
+    <li id="hs-score-1">${numbersList[1]}</li>
+    <li id="hs-score-2">${numbersList[2]}</li>
+    <li id="hs-score-3">${numbersList[3]}</li>
+    <li id="hs-score-4">${numbersList[4]}</li>`;
 
     highScoreInput.innerHTML = highScoreNumbers;
   }

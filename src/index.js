@@ -27,7 +27,7 @@ window.onload = function () {
 
   function startGame() {
     // creating a new instance of the game class
-    game = new Game(20, name); // -----> maxTime in brackets
+    game = new Game(25, name); // -----> maxTime in brackets
     // call the start game method
     game.start(isRestarting);
   }
