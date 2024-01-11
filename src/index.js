@@ -14,7 +14,6 @@ window.onload = function () {
     let inputElement = document.getElementById("name-input");
     // get name from input
     name = inputElement.value.toUpperCase();
-    if (name === "") name = "unknown"
     startGame(); 
   });
 

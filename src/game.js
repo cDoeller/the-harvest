@@ -96,12 +96,12 @@ class Game {
   }
 
   gameLoop() {
-    // spawn bonus target
+    // SPAWN BONUS TARGET
     if (!this.bonusIsActive) {
       // switch activity of bonus
       this.bonusIsActive = true;
       // set random timeout for spawning bonus target
-      const randomBonusSpawn = Math.random() * this.countdown * 1000;
+      const randomBonusSpawn = Math.random() * this.countdown / 2 * 1000;
       this.bonusTargetTimeout = setTimeout(() => {
         // spawn bonus
         this.spawnBonusTarget();
@@ -386,6 +386,8 @@ class Game {
       scoreList.push(parseInt(tempScore));
       nameList.push(tempName);
     }
+
+    if (this.name === "") this.name = "UNKNOWN";
 
     // compare with current score
     // insert new top 5 highscore in list

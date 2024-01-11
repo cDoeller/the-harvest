@@ -74,14 +74,15 @@ button {
 
 .start-end-container {
   width: 60%;
-  /* min-height: 50vh; */
+  max-height: 75vh;
   padding: 40px 40px 60px 40px;
   border-radius: 40px;
   background-color: rgba(0, 0, 0, 0.6);
   display: flex;
   flex-direction: column;
   align-items: center;
-  overflow: scroll;
+  overflow: auto;
+  
 }
 
 .end-background {
@@ -135,7 +136,7 @@ button {
 .normal-text {
   margin-top: 30px;
   width: 100%;
-  font-size: 1.6em;
+  font-size: 1.4em;
   text-align: left;
   color: white;
   hyphens: auto;
@@ -148,19 +149,21 @@ button {
 }
 
 #start-text-container {
-  width: 45%;
+  width: 55%;
 }
 
 #name-and-keys {
-  width: 50%;
+  width: 40%;
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-top: 30px;
+  gap: 30px;
 }
 
 #input-name-container {
-  height: 40%;
+  /* height: 30%; */
+  margin-top: 10px;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -169,7 +172,7 @@ button {
 }
 
 #explain-buttons-container {
-  height: 60%;
+  /* height: 70%; */
   width:100%;
   display: flex;
   flex-direction: column;
@@ -180,7 +183,7 @@ button {
 .explain-button {
   width: 50%;
   font-family: "Dangrek";
-  font-size: 1.6em;
+  font-size: 1.4em;
   color: white;
   text-transform: uppercase;
   background-color: transparent;
@@ -200,16 +203,16 @@ button {
 
 input {
   width: 50%;
-  height: 40px;
-  font-size: 1.6em;
+  height: 40px; 
+  font-size: 1.4em;
   text-align: center;
   border-radius: 10px;
   border-style: dotted;
+  overflow: visible;
   font-family: manrope;
   text-transform: uppercase;
   background-color: transparent;
   color: white;
-  /* padding: 5px; */
 }
 
 /* GAME SCREEN */
