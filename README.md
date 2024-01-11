@@ -1,13 +1,13 @@
 
-## idea
+## Idea
 I want to make a game similar to the old "Moorhuhn" (english "Red Grouse" or "Crazy Chicken") shoot-'em-up that I played a lot as a kid. The game is about shooting as many "Red Grouse" as you can within a time frame of 90 seconds. The targets fly across the screen and they have different sizes. The smallest ones are harder to shoot (25 points) than the biggest ones (5 points). You shoot with a left click and you need to reload - latest after 8 shots - with a right click.
 
 My idea is a simple clone of the game in which you do not shoot at animals but throw darts at broccolis. More precisely not at broccolis, but at balloons that carry the broccolis up into the sky. When you hit a balloon, the broccoli should fall down to earth and continue growing to brocco-bloom the desert.
 
-## name
+## Name
 The Harvest
 
-## general mechanics
+## General Mechanics
 
 - there are constalty broccolis on balloons (broccoloons) rising up to the sky (spawning) at random positions and times
 - you have X seconds to save as many broccoli as you can by throwing darts at the balloons (countdown timer)
